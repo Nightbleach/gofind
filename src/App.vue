@@ -1,23 +1,23 @@
 <template>
-  <div id="app">
-    <h1>项目开始</h1>
-    <router-view/>
-  </div>
+ <v-app class="grey lighten-4">
+  <Navbar></Navbar>
+   <v-content>
+     <router-view/>
+   </v-content>
+  </v-app>
+
 </template>
 
-<script>
+<script>import Navbar from '@/components/Navbar'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Navbar
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  margin-top: 60px;
-  color: indigo;
-}
+
 </style>
+是

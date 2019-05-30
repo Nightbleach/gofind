@@ -7,8 +7,13 @@ import './assets/styles/border.css'
 import fastClick from 'fastclick'
 import router from './router'
 import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  iconfont: 'fa' // 'md' || 'mdi' || 'fa' || 'fa4'
+})
+
 Vue.config.productionTip = false
 fastClick.attach(document.body)
 
