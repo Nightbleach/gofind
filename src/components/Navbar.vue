@@ -1,15 +1,29 @@
 <template>
   <nav>
-    <v-navigation-drawer temporary app v-model="navDrawer">
-      <v-list>
+    <v-navigation-drawer class="lime lighten-5"  width="270" temporary app v-model="navDrawer">
+      <v-list class="draw-gofind pa-0 mt-1">
         <v-list-tile>
           <v-list-tile-action>
-            <v-icon>supervisor_account</v-icon>
+            <v-icon medium class="">fa-user-astronaut</v-icon>
           </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="title draw-title" to="/">GoFind</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+      <v-divider class="ma-0" inset>or</v-divider>
+      <v-list>
+        <v-list-tile v-for="item in drawerLists" :key="item.icon" :to="item.route">
+          <v-list-tile-action>
+            <v-icon>{{item.icon}}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="font-weight-regular">{{item.title}}</v-list-tile-title>
+          </v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar flat class="light-blue darken-1">
+    <v-toolbar flat class="light-blue accent-3">
       <v-toolbar-title class="ml-0 logo-text">
         <router-link to="/" tag="span" style="cursor: pointer">
         <v-icon large left  color="white" class="mt-1 brand-logo">fa-user-astronaut</v-icon>
@@ -24,7 +38,7 @@
         <v-btn flat color="white" class="hidden-xs-only">
           <router-link to="/login" tag="span">
             <v-icon left>far fa-user</v-icon>
-          <span class="title text-capitalize">Login</span>
+            <span class="title text-capitalize">Login</span>
           </router-link>
         </v-btn>
       </v-toolbar-items>
@@ -38,13 +52,21 @@ export default {
   name: 'Navbar',
   data () {
     return {
-      navDrawer: false
+      navDrawer: false,
+      drawerLists: [
+        {icon: 'fa-user-astronaut', title: 'Search your treasure', route: '/'},
+        {icon: 'fas fa-child', title: 'Sign in', route: '/login'},
+        {icon: 'fas fa-user-plus', title: 'Sign up', route: '/login'}
+      ]
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+.draw-title
+  height: 19px
+  font-family Verdana
 .brand-text
   font-family American Typewriter
   font-size 2rem
