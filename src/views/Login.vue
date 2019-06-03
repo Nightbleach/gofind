@@ -7,21 +7,21 @@
              class="white--text mt-4 login-btn mb-4"
              v-for="item in logInBtn" :key="item.name"
       >
-        <v-icon left class="">{{item.name}}</v-icon>
+        <v-icon left>{{item.name}}</v-icon>
         <div class="text-capitalize font-weight-bold subheading">{{item.description}}</div>
       </v-btn>
       <div class="divider01">or</div>
       <v-form>
         <v-text-field
-          lazy-validation
-          label="Email"
-          name="email"
-          id="email"
-          v-model="email"
-          type="email"
-          prepend-icon="far fa-envelope"
-          required>
-        </v-text-field>
+        lazy-validation
+        label="Email"
+        name="email"
+        id="email"
+        v-model="email"
+        type="email"
+        prepend-icon="far fa-envelope"
+        required>
+      </v-text-field>
         <v-text-field
           lazy-validation
           label="password"
@@ -48,7 +48,9 @@ export default {
       logInBtn: [
         {name: 'fab fa-google', description: 'Continue with Google'},
         {name: 'fab fa-facebook', description: 'Login with Facebook'}
-      ]
+      ],
+      email: '',
+      password: ''
     }
   }
 }
@@ -75,10 +77,10 @@ export default {
 // set login title font size
 .login-text
   text-align center
-  font-family Verdana
+  font-family Montserrat
 +for_breakpoint(desktop)
   .login-text
-    font-size 2.25rem
+    font-size 2.55rem
     -webkit-transform font-size 0.2s ease-out
 +for_breakpoint(tablet)
   .login-text

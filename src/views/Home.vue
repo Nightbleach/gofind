@@ -1,12 +1,17 @@
 <template>
-<div class="home">
-  <h1>this is home page</h1>
-</div>
+<v-container>
+<div @click="submit">Home page</div>
+</v-container>
 </template>
 
 <script>
 export default {
-  name: 'Home'
+  name: 'Home',
+  methods: {
+    submit () {
+      console.log('bye bye then')
+    }
+  }
 }
 </script>
 

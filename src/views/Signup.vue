@@ -1,28 +1,145 @@
 <template>
-<v-container class="signup-con mx-1">
-  <v-layout row no-wrap>
-    <v-flex xs12 md6>
-      <div class="signup-l-text font-weight-bold">Help people to find their treasure ?</div>
-      <p>Just upload the thing  and 'where did you find' info you're so kind</p>
+<v-container class="signup-con">
+  <v-layout row no-wrap justify-center>
+    <v-flex xs12 md6 lg5>
+      <div class="signup-l-text mt-1  mb-3 font-weight-black justify-center">Help people to find their treasure ?</div>
+      <p class="subheading mt-2 signup-l-text2 wrap">Just upload the thing  and 'where did you find' info</p>
+      <p class="subheading mt-2 signup-l-text2 wrap">you're so Kind!</p>
+      <v-card>
+       <v-container>
+         <v-layout>
+           <v-flex xs12>
+             <v-card color="blue accent-2">
+                 <v-card-actions>
+                   <v-icon class="white--text pl-2" left>fab fa-google</v-icon>
+                   <v-btn flat block class="white--text text-capitalize google-text title font-weight-black">Continue with Google</v-btn>
+                 </v-card-actions>
+             </v-card>
+           </v-flex>
+         </v-layout>
+         <v-divider class="my-4"></v-divider>
+         <v-layout>
+           <v-flex xs12>
+                 <v-form @click.prevent="onSignup">
+                   <v-text-field
+                     autocomplete="username"
+                     label="Enter email"
+                     name="email"
+                     id="email"
+                     v-model="email"
+                     type="email"
+                     prepend-icon="far fa-envelope"
+                     >
+                   </v-text-field>
+                   <v-text-field
+                     label="Password"
+                     name="password"
+                     id="Password"
+                     v-model="password"
+                     autocomplete="new-password"
+                     :type="show1 ? 'text' : 'password'"
+                     prepend-icon="fas fa-unlock-alt"
+                     @click:append="show1 = !show1"
+                     :append-icon="show1 ? ' far fa-eye' : 'far fa-eye-slash'"
+                     class="input-group--focused"
+                     >
+                   </v-text-field>
+                   <v-text-field
+                     label="Confirm password"
+                     name="confirmPassword"
+                     id="confirmPassword"
+                     v-model="confirmPassword"
+                     type="confirmPassword"
+                     prepend-icon="far fa-lightbulb"
+                     :rules="[comparePasswords]"
+                     >
+                   </v-text-field>
+                   <p class="policy">(We won't share it with others)</p>
+                   <v-btn type="submit" large block flat class="cr-acc mt-4 title text-capitalize success font-weight-bold">Create an account</v-btn>
+                 </v-form>
 
+           </v-flex>
+         </v-layout>
+
+       </v-container>
+      </v-card>
     </v-flex>
 
+    <v-flex class="hidden-sm-and-down img-people-head"  md6 lg4 offset-md1>
+      <v-img :src="image" contain  position="bottom center"></v-img>
+      <div class="tr">
+        <p class="title font-weight-medium pt-5">Help people can:</p>
+        <p class="subheading font-weight-regular"><span class="ted fas fa-user-friends pr-2"></span>make us better</p>
+        <p class="subheading font-weight-regular"><span class="far fa-star star pr-2"></span>make society better</p>
+        <p class="subheading font-weight-regular"><span class="fas fa-globe-asia world pr-2"></span>make world better</p>
+      </div>
+    </v-flex>
   </v-layout>
 </v-container>
 </template>
 
 <script>
 export default {
-  name: 'Signup'
+  name: 'Signup',
+  data () {
+    return {
+      show1: false,
+      show2: false,
+      image: require('@/assets/img/people-head.png'),
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
+  },
+  computed: {
+    comparePasswords () {
+      return this.password !== this.confirmPassword ? 'Sorry, your passwords do not match' : ''
+    }
+  },
+  methods: {
+    onSignup () {
+      /* Use Vuex to store action mutation auth */
+      // console.log({email: this.email, password: this.password, confirmPassword: this.confirmPassword})
+      // console.log('123')
+      alert('123')
+    }
+  }
 }
 </script>
 
 <style lang="stylus" scoped>@import '../stylus/main.styl'
+.img-people-head
+  margin-top 6rem
+  .tr
+    font-family Montserrat !important
+    .ted
+      color: #00B0FF
+    .world
+      color #00C853
+    .star
+      color #FFD600
+.policy
+  font-family Montserrat
 
+.cr-acc
+  font-family Montserrat !important
+.divider01
+  padding  0 20px 0;
+  margin  21px 0 27px;
+  line-height 1px;
+  border-left 5px solid #ddd;
+  border-right 5px solid #ddd;
+  text-align  center;
+  color: #9ea6b2
+  font-weight bold
+.google-text
+  font-family Montserrat !important
 .signup-l-text
-  border 1px solid red
-  font-family Verdana
+  font-family Montserrat
   color #3D414A
+.signup-l-text2
+  font-family Montserrat
+  line-height 15px
 +for_breakpoint(desktop)
   .signup-l-text
     font-size 1.8rem
@@ -32,9 +149,16 @@ export default {
     font-size 1.3rem
     -webkit-transform font-size 0.2s ease-out
     text-align center
+    // Sit text style
+  .signup-l-text2
+    text-align center
 +for_breakpoint(mobile)
   .signup-l-text
-    font-size 1rem
+    font-size 1rem !important
     -webkit-transform font-size 0.2s ease-out
     text-align center
+  .signup-l-text2
+    text-align center
+    font-size 0.8rem !important
+    -webkit-transform font-size 0.2s ease-out
 </style>

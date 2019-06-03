@@ -38,7 +38,7 @@
         <v-btn flat color="white" class="hidden-xs-only">
           <router-link to="/login" tag="span">
             <v-icon left>far fa-user</v-icon>
-            <span class="title text-capitalize">Login</span>
+            <span class="title text-capitalize nav-login-text">Login</span>
           </router-link>
         </v-btn>
       </v-toolbar-items>
@@ -56,7 +56,7 @@ export default {
       drawerLists: [
         {icon: 'fa-user-astronaut', title: 'Search your treasure', route: '/'},
         {icon: 'fas fa-child', title: 'Sign in', route: '/login'},
-        {icon: 'fas fa-user-plus', title: 'Sign up', route: '/login'}
+        {icon: 'fas fa-user-plus', title: 'Sign up', route: '/signup'}
       ]
     }
   }
@@ -64,6 +64,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.nav-login-text
+  font-family Montserrat !important
 .draw-title
   height: 19px
   font-family Verdana
