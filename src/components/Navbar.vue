@@ -32,7 +32,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="login-font mr-3 mt-1">
-        <v-btn flat color="white">
+        <v-btn flat color="white" @click="searchInput">
           <v-icon class="search-icon" right>fas fa-search</v-icon>
         </v-btn>
         <v-btn flat color="white" class="hidden-xs-only">
@@ -60,6 +60,10 @@ export default {
       ]
     }
   }
+  // methods : {
+  //   searchInput () {
+  //   }
+  // }
 }
 </script>
 

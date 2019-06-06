@@ -18,17 +18,21 @@
            </v-flex>
          </v-layout>
          <v-divider class="my-4"></v-divider>
+         <div v-if="error">
+           <app-alert @dismissed="onDismissed" :text ="error.message" ></app-alert>
+         </div>
          <v-layout>
            <v-flex xs12>
-                 <v-form @click.prevent="onSignup">
+                 <v-form @submit.prevent="onSignup">
                    <v-text-field
-                     autocomplete="username"
+                     autocomplete="off"
                      label="Enter email"
                      name="email"
                      id="email"
                      v-model="email"
                      type="email"
                      prepend-icon="far fa-envelope"
+                     :rules="[rules.email]"
                      >
                    </v-text-field>
                    <v-text-field
@@ -45,11 +49,14 @@
                      >
                    </v-text-field>
                    <v-text-field
+                     autocomplete="off"
                      label="Confirm password"
                      name="confirmPassword"
                      id="confirmPassword"
                      v-model="confirmPassword"
-                     type="confirmPassword"
+                     :type="show2 ? 'text' : 'password'"
+                     @click:append="show2 = !show2"
+                     :append-icon="show2 ? ' far fa-eye' : 'far fa-eye-slash'"
                      prepend-icon="far fa-lightbulb"
                      :rules="[comparePasswords]"
                      >
@@ -88,20 +95,44 @@ export default {
       image: require('@/assets/img/people-head.png'),
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      rules: {
+        email: value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'Invalid e-mail.'
+        }
+      }
     }
   },
   computed: {
     comparePasswords () {
       return this.password !== this.confirmPassword ? 'Sorry, your passwords do not match' : ''
+    },
+    // Get user info from store=> getters
+    user () {
+      return this.$store.getters.user
+    },
+    error () {
+      return this.$store.getters.error
+    }
+  },
+  // If user had logged in , then it will route to the home page
+  watch: {
+    user (value) {
+      if (value !== null && value !== undefined) {
+        this.$router.push('/')
+      }
     }
   },
   methods: {
+    // Signup function that allows user to signup our app
     onSignup () {
       /* Use Vuex to store action mutation auth */
-      // console.log({email: this.email, password: this.password, confirmPassword: this.confirmPassword})
-      // console.log('123')
-      alert('123')
+      this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
+    },
+    onDismissed () {
+      console.log('Dismissed Alert!')
+      this.$store.dispatch('clearError')
     }
   }
 }
