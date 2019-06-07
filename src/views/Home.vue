@@ -1,6 +1,10 @@
 <template>
 <v-container>
-<div @click="submit">Home page</div>
+  <v-layout row justify-center>
+    <v-flex xs12>
+      <v-btn color="primary"></v-btn>
+    </v-flex>
+  </v-layout>
 </v-container>
 </template>
 
