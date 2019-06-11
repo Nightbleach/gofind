@@ -15,11 +15,6 @@
       <div v-if="error">
         <app-alert @dismissed="onDismissed" :text ="error.message" ></app-alert>
       </div>
-<!--      <v-layout row v-if="error">-->
-<!--        <v-flex xs10>-->
-<!--          <app-alert @dismissed="onDismissed" :text ="error.message" ></app-alert>-->
-<!--        </v-flex>-->
-<!--      </v-layout>-->
       <v-form @submit.prevent="onSignin" class="mt-3">
         <v-text-field
         lazy-validation

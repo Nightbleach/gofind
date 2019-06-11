@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="nav-height">
     <v-navigation-drawer class="lime lighten-5"  width="270" temporary app v-model="navDrawer">
       <v-list class="draw-gofind pa-0 mt-1">
         <v-list-tile>
@@ -7,7 +7,7 @@
             <v-icon medium class="">fa-user-astronaut</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title class="title draw-title" to="/">GoFind</v-list-tile-title>
+            <v-list-tile-title class="title draw-title" to="/">Lostfounds</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -23,18 +23,45 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar flat class="light-blue accent-3">
-      <v-toolbar-title class="ml-0 logo-text">
+    <v-toolbar fixed height="62px !important" flat class="light-blue accent-3">
+      <v-toolbar-title class="logo-text mt-2">
         <router-link to="/" tag="span" style="cursor: pointer">
-        <v-icon large left  color="white" class="mt-1 brand-logo">fa-user-astronaut</v-icon>
-        <span class="font-weight-bold white--text brand-text ml-0">GoFind</span>
+        <v-icon large left  color="white" class="brand-logo">fa-user-astronaut</v-icon>
+        <span class="font-weight-bold white--text brand-text">Lostfounds</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+
       <v-toolbar-items class="login-font mr-3 mt-1">
-        <v-btn flat color="white" @click="searchInput">
-          <v-icon class="search-icon" right>fas fa-search</v-icon>
-        </v-btn>
+          <v-text-field
+            autofocus
+            color="white"
+            clearable
+            @click:clear="callItBack()"
+            flat
+            outline
+            dark
+            box
+            v-show="showText"
+            class="ml-2 search-textField"
+            v-model="search"
+            label="Searching your stuff..."
+          >
+          </v-text-field>
+          <v-btn flat color="white" left @click="showText =!showText">
+            <v-icon
+              class="search-icon"
+              flat
+              color="white"
+              right
+              >fas fa-search
+            </v-icon>
+          </v-btn>
+<!--        </v-btn>-->
+<!-- copy 结束-->
+<!--        <v-btn flat color="white" @click="searchInput">-->
+<!--          <v-icon class="search-icon" right>fas fa-search</v-icon>-->
+<!--        </v-btn>-->
         <v-btn flat color="white" class="hidden-xs-only">
           <router-link to="/login" tag="span">
             <v-icon left>far fa-user</v-icon>
@@ -42,7 +69,7 @@
           </router-link>
         </v-btn>
       </v-toolbar-items>
-      <v-toolbar-side-icon class="white--text hidden-sm-and-up" @click.stop="navDrawer=!navDrawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon class="white--text hidden-sm-and-up mt-2" @click.stop="navDrawer=!navDrawer"></v-toolbar-side-icon>
     </v-toolbar>
   </nav>
 </template>
@@ -52,6 +79,9 @@ export default {
   name: 'Navbar',
   data () {
     return {
+      openSearch: false,
+      showText: false,
+      search: null,
       navDrawer: false,
       drawerLists: [
         {icon: 'fa-user-astronaut', title: 'Search your treasure', route: '/'},
@@ -59,31 +89,63 @@ export default {
         {icon: 'fas fa-user-plus', title: 'Sign up', route: '/signup'}
       ]
     }
+  },
+  methods: {
+    callItBack () {
+      alert('function called')
+    },
+    searchInput () {
+    }
+    // showText () {
+    //   this.showIcon = false
+    // }
   }
-  // methods : {
-  //   searchInput () {
-  //   }
-  // }
 }
 </script>
 
-<style lang="stylus" scoped>
-.nav-login-text
-  font-family Montserrat !important
-.draw-title
-  height: 19px
-  font-family Verdana
-.brand-text
-  font-family American Typewriter
-  font-size 2rem
+<style lang="stylus" scoped>@import '../stylus/main.styl'
+// set the size of search bar start
+.search-textField
+  width 26rem
+  font-family Montserrat
++for_breakpoint(tablet)
+  .search-textField
+    width 29rem
+    height 60px
+@media (min-width: 688px) and (max-width: 855px)
+  .search-textField
+    width:20rem
+@media (max-width: 550px)
+  .search-textField
+    width:22rem
+@media (max-width: 466px)
+  .search-textField
+    width:18.4rem
+
+// set the size of search bar  end
+  .nav-login-text
+    font-family Montserrat !important
+    line-height 64px
+  .draw-title
+    height: 19px
+    font-family Verdana
+  .brand-text
+    font-family American Typewriter
+    font-size 2rem
+    line-height 64px
+    @media (max-width: 767.98px)
+      font-size 1.5rem
   @media (max-width: 767.98px)
-    font-size 1.5rem
-@media (max-width: 767.98px)
-  .logo-text
-    margin-left -2rem
-  .brand-logo
-    font-size 1rem
-@media (min-width: 320px) and (max-width: 480px)
-  .logo-text
-    margin-left -2.5rem
+    .logo-text
+      margin-left -2rem
+      line-height 64px
+      text-indent -10px
+    .brand-logo
+      font-size 1rem
+  @media (min-width: 320px) and (max-width: 480px)
+    .logo-text
+      line-height 64px
+      margin-left -2.5rem
+      text-indent -13px
+
 </style>
