@@ -14,7 +14,7 @@
                     class="text-capitalize btn-grad white--text yellow amber lighten-1 font-weight-black title "
                     v-on="on"
                   >Wow, You  found it !
-                    <v-icon class="upload-icon ml-4" small right>fa fa-cloud-upload-alt</v-icon>
+                    <v-icon class="upload-icon ml-4" regular right>fal fa-cloud-upload</v-icon>
                   </v-btn>
                 </v-flex>
                 <v-flex xs12>
@@ -62,52 +62,40 @@
                      flat
                      class="amber lighten-2 text-capitalize white--text ml-4"
                      @click="onPickFile"
-                   >Upload Image</v-btn>
-                   <input type="file"
-                          style="display: none"
-                          ref="fileInput"
-                          accept="image/*"
-                          @change="onFilePicked"
+                     style="cursor: pointer"
+                   >Add/Replace Image</v-btn>
+                   <input
+                     type="file"
+                     style="display: none"
+                     ref="fileInput"
+                     accept="image/*"
+                     @change="onFilePicked"
+                     :removable="true"
                    >
                  </v-flex>
                   <v-flex>
-                    <img :src="imageUrl" height="150" alt="">
+                    <v-card max-width="450" class="text-xs-center">
+                        <img
+                          style="vertical-align: middle"
+                          :src ="imageUrl"
+                          height="250"
+                          alt="">
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+<!--                set a divider-->
+                <v-divider class="my-4"></v-divider>
+<!--                set found location-->
+                <v-layout row justify-start wrap>
+                  <v-flex xs12 class="form-text-font">
+                   <p class="subheading form-text-heading">
+                     Please tell us the approximate location or places , that helps owners to remind where they dropped the stuff off   </p>
+
                   </v-flex>
                 </v-layout>
               </form>
             </v-container>
-            <v-divider></v-divider>
-
-<!--            <v-list two-line subheader>-->
-<!--              <v-subheader>General</v-subheader>-->
-<!--              <v-list-tile avatar>-->
-<!--                <v-list-tile-action>-->
-<!--                  <v-checkbox v-model="notifications"></v-checkbox>-->
-<!--                </v-list-tile-action>-->
-<!--                <v-list-tile-content>-->
-<!--                  <v-list-tile-title>Notifications</v-list-tile-title>-->
-<!--                  <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>-->
-<!--                </v-list-tile-content>-->
-<!--              </v-list-tile>-->
-<!--              <v-list-tile avatar>-->
-<!--                <v-list-tile-action>-->
-<!--                  <v-checkbox v-model="sound"></v-checkbox>-->
-<!--                </v-list-tile-action>-->
-<!--                <v-list-tile-content>-->
-<!--                  <v-list-tile-title>Sound</v-list-tile-title>-->
-<!--                  <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>-->
-<!--                </v-list-tile-content>-->
-<!--              </v-list-tile>-->
-<!--              <v-list-tile avatar>-->
-<!--                <v-list-tile-action>-->
-<!--                  <v-checkbox v-model="widgets"></v-checkbox>-->
-<!--                </v-list-tile-action>-->
-<!--                <v-list-tile-content>-->
-<!--                  <v-list-tile-title>Auto-add widgets</v-list-tile-title>-->
-<!--                  <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>-->
-<!--                </v-list-tile-content>-->
-<!--              </v-list-tile>-->
-<!--            </v-list>-->
+<!--            set found location-->
           </v-card>
         </v-dialog>
     </v-flex>

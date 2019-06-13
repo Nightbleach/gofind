@@ -17,6 +17,7 @@ import 'vuetify/dist/vuetify.min.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import store from './store'
 import AlertCmp from './components/Alert'
+import '@fortawesome/fontawesome-pro/css/all.css'
 
 Vue.use(Vuetify, {
   iconfont: 'fa' // 'md' || 'mdi' || 'fa' || 'fa4'

@@ -1,8 +1,8 @@
 <template>
 <v-container class="signup-con">
-  <v-layout row no-wrap justify-center>
-    <v-flex xs12 md6 lg5>
-      <div class="signup-l-text mt-1  mb-3 font-weight-black justify-center">Help people to find their treasure ?</div>
+  <v-layout row no-wrap justify-center class="mt-1">
+    <v-flex xs12 md6 lg5 class="mt-3">
+      <div class="signup-l-text mt-2  mb-3 font-weight-black justify-center">Help people to find their treasure ?</div>
       <p class="subheading mt-2 signup-l-text2 wrap">Just upload the thing  and 'where did you find' info</p>
       <p class="subheading mt-2 signup-l-text2 wrap">you're so Kind!</p>
       <v-card>
@@ -31,7 +31,7 @@
                      id="email"
                      v-model="email"
                      type="email"
-                     prepend-icon="far fa-envelope"
+                     prepend-icon="fal fa-envelope-open-text"
                      :rules="[rules.email]"
                      >
                    </v-text-field>
@@ -42,9 +42,9 @@
                      v-model="password"
                      autocomplete="new-password"
                      :type="show1 ? 'text' : 'password'"
-                     prepend-icon="fas fa-unlock-alt"
+                     prepend-icon="fal fa-lock-alt"
                      @click:append="show1 = !show1"
-                     :append-icon="show1 ? ' far fa-eye' : 'far fa-eye-slash'"
+                     :append-icon="show1 ? ' far fa-eye' : 'fal fa-eye-slash'"
                      class="input-group--focused"
                      >
                    </v-text-field>
@@ -56,8 +56,8 @@
                      v-model="confirmPassword"
                      :type="show2 ? 'text' : 'password'"
                      @click:append="show2 = !show2"
-                     :append-icon="show2 ? ' far fa-eye' : 'far fa-eye-slash'"
-                     prepend-icon="far fa-lightbulb"
+                     :append-icon="show2 ? ' far fa-eye' : 'fal fa-eye-slash'"
+                     prepend-icon="fal fa-lightbulb-on"
                      :rules="[comparePasswords]"
                      >
                    </v-text-field>
@@ -76,9 +76,9 @@
       <v-img :src="image" contain  position="bottom center"></v-img>
       <div class="tr">
         <p class="title font-weight-medium pt-5">Help people can:</p>
-        <p class="subheading font-weight-regular"><span class="ted fas fa-user-friends pr-2"></span>make us better</p>
-        <p class="subheading font-weight-regular"><span class="far fa-star star pr-2"></span>make society better</p>
-        <p class="subheading font-weight-regular"><span class="fas fa-globe-asia world pr-2"></span>make world better</p>
+        <p class="subheading font-weight-regular"><span class="ted fal fa-people-carry pr-2"></span>make us better</p>
+        <p class="subheading font-weight-regular"><span class="fal fa-city pr-2" style="color:orange;"></span>make society better</p>
+        <p class="subheading font-weight-regular"><span class="fal fa-globe-asia world pr-2"></span>make world better</p>
       </div>
     </v-flex>
   </v-layout>
@@ -153,7 +153,7 @@ export default {
   font-family Montserrat
 
 .cr-acc
-  font-family Montserrat !important
+  font-family Montserrat
 .divider01
   padding  0 20px 0;
   margin  21px 0 27px;
@@ -164,7 +164,7 @@ export default {
   color: #9ea6b2
   font-weight bold
 .google-text
-  font-family Montserrat !important
+  font-family Montserrat
 .signup-l-text
   font-family Montserrat
   color #3D414A

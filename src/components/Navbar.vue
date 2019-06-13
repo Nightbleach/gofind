@@ -23,10 +23,10 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed height="62px !important" flat class="light-blue accent-3">
+    <v-toolbar  height="62px !important" flat class="light-blue accent-3">
       <v-toolbar-title class="logo-text mt-2">
         <router-link to="/" tag="span" style="cursor: pointer">
-        <v-icon large left  color="white" class="brand-logo">fa-user-astronaut</v-icon>
+        <v-icon large left  color="white" class="brand-logo">far fa-user-astronaut</v-icon>
         <span class="font-weight-bold white--text brand-text">Lostfounds</span>
         </router-link>
       </v-toolbar-title>
@@ -54,7 +54,7 @@
               flat
               color="white"
               right
-              >fas fa-search
+              >far fa-search
             </v-icon>
           </v-btn>
 <!--        </v-btn>-->
@@ -64,7 +64,7 @@
 <!--        </v-btn>-->
         <v-btn flat color="white" class="hidden-xs-only">
           <router-link to="/login" tag="span">
-            <v-icon left>far fa-user</v-icon>
+            <v-icon left>fal fa-user</v-icon>
             <span class="title text-capitalize nav-login-text">Login</span>
           </router-link>
         </v-btn>

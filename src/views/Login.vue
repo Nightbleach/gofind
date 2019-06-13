@@ -1,7 +1,7 @@
 <template>
 <v-container>
-  <v-layout class="login-layout" row justify-center no-wrap>
-    <v-flex xs10 sm7 md7 lg6 class="mt-4">
+  <v-layout class="login-layout mt-2" row justify-center no-wrap>
+    <v-flex xs10 sm7 md7 lg6 class="mt-5">
       <div class="login-text font-weight-bold">Login to your account</div>
       <v-btn large block color="blue accent-2"
              class="white--text mt-4 login-btn mb-4 social-button"
@@ -24,7 +24,7 @@
         id="email"
         v-model="email"
         type="email"
-        prepend-icon="far fa-envelope"
+        prepend-icon="fal fa-envelope-open-text"
         :rules="[rules.email]"
         >
       </v-text-field>
@@ -35,7 +35,7 @@
           id="password"
           v-model="password"
           type="password"
-          prepend-icon="fas fa-unlock-alt"
+          prepend-icon="fal fa-lock-alt"
           required>
         </v-text-field>
         <v-btn type="submit" large block flat class="mt-4 headline text-capitalize success font-weight-bold">Login</v-btn>
