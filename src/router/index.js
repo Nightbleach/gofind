@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import Home from '../views/Home'
 import Login from '../views/Login'
 import Signup from '../views/Signup'
-import LostItemStorage from '../views/LostItemStorage'
+import LostFoundsWarehouses from '../views/LostFoundsWarehouses'
+import LostFoundsWarehouse from '../views/LostFoundsWarehouse'
 
 Vue.use(Router)
 
@@ -25,9 +26,16 @@ export default new Router({
       component: Signup
     },
     {
-      path: '/lostitemstorage',
-      name: 'Lostitemstorage',
-      component: LostItemStorage
+      path: '/lostFoundsWarehouses',
+      name: 'LostFoundsWarehouses',
+      component: LostFoundsWarehouses
+    },
+    {
+      path: '/LostFoundsWarehouses/:id',
+      props: true,
+      name: 'LostFoundsWarehouse',
+      component: LostFoundsWarehouse
+
     }
   ],
   mode: 'history'
