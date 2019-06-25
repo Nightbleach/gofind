@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
 <v-container>
 <!-- main home page start -->
   <v-layout align-center justify-center row>
@@ -33,28 +33,38 @@
               <v-toolbar-title>3 steps that you can help others to find their stuff</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-items>
-                <v-btn dark flat @click="dialog = false" class="text-capitalize subheading upload-text" >Upload</v-btn>
+                <v-btn type="submit" form ="warehouseItemUpload" dark flat :disabled="!formIsValid"  class="text-capitalize subheading upload-text" >Upload</v-btn>
               </v-toolbar-items>
             </v-toolbar>
 <!--         second toolbar end   -->
             <v-container text-xs-left class="ml-0">
-              <form action="">
+              <form ref="form" @submit.prevent="onCreateWarehouseItem" id="warehouseItemUpload">
                 <v-layout row justify-start wrap>
                  <v-flex xs12 class="form-text-font">
-                  <p class="subheading form-text-heading">What types of stuff you found ?</p>
+                  <p class="subheading form-text-heading">
+                    <v-icon class="mr-1" color="#40C4FF">fal fa-layer-group</v-icon>
+                    What types of stuff you found ?
+                  </p>
                    <v-combobox
+                     name="category"
+                     id="category"
                      flat
                      clearable
+                     clear-icon="fal fa-times-circle"
                      color="success"
-                     v-model="select"
+                     v-model="category"
                      :items="itemsCategory"
                      label="Is that a wallet or anything else"
-                     :rules="[ rules.required]"
+                     :rules="[rules.required]"
+                     placeholder="Wallet?"
                    >
                    </v-combobox>
                  </v-flex>
                  <v-flex xs12 class="form-text-font">
-                   <p class="subheading form-text-heading" style="display: inline">What does stuff look like ?</p>
+                   <p class="subheading form-text-heading" style="display: inline">
+                     <v-icon class="mr-1" color="#40C4FF">fal fa-image</v-icon>
+                     What does stuff look like ?
+                   </p>
                    <v-btn
                      small
                      raised
@@ -70,7 +80,6 @@
                      ref="fileInput"
                      accept="image/*"
                      @change="onFilePicked"
-                     :removable="true"
                    >
                  </v-flex>
                   <v-flex>
@@ -79,6 +88,7 @@
                           style="vertical-align: middle"
                           :src ="imageUrl"
                           height="250"
+                          id="imageUrl"
                           alt="">
                     </v-card>
                   </v-flex>
@@ -89,13 +99,79 @@
                 <v-layout row justify-start wrap>
                   <v-flex xs12 class="form-text-font">
                    <p class="subheading form-text-heading">
-                     Please tell us the approximate location or places , that helps owners to remind where they dropped the stuff off   </p>
+                     <v-icon class="mr-1" color="#40C4FF">fal fa-location</v-icon>
+                     Please tell us the approximate location or places , that helps owners to remind where they lost their stuffs</p>
+<!--                    TEST-->
+                    <v-text-field
+                    v-model="foundAt"
+                    name="foundAt"
+                    id="foundAt"
+                    :item="cityoption">
 
+                    </v-text-field>
+
+<!--                    TEST END-->
+
+<!--                    <v-combobox-->
+<!--                      id="foundAt"-->
+<!--                      name="foundAt"-->
+<!--                      v-model="foundAt"-->
+<!--                      :items="dunedinDistrict"-->
+<!--                      :key="dunedinDistrict.key"-->
+<!--                      :search-input.sync="search"-->
+<!--                      hint="maximum of 2 regions or places"-->
+<!--                      persistent-hint-->
+<!--                      hide-selected-->
+<!--                      label= "You found it at/in..."-->
+<!--                      color="#B388FF"-->
+<!--                      :rules="[rules.required]"-->
+<!--                      prepend-inner-icon="fal fa-map-marker-check"-->
+<!--                      clear-icon="fal fa-times-circle"-->
+<!--                      clearable-->
+<!--                      multiple-->
+<!--                      small-chips-->
+<!--                      deletable-chips-->
+<!--                      ref="combobox"-->
+<!--                      @change="toggleMenu"-->
+<!--                      item-text="region"-->
+<!--                      return-object-->
+<!--                      required-->
+<!--                    >-->
+
+<!--                      <template v-slot:no-data>-->
+<!--                        <v-list-tile>-->
+<!--                          <v-list-tile-content>-->
+<!--                            <v-list-tile-title>-->
+<!--                              No places matching "<strong>{{ search }}</strong>".Press-->
+<!--                              <kbd>enter</kbd> to create an one.-->
+<!--                            </v-list-tile-title>-->
+<!--                          </v-list-tile-content>-->
+<!--                        </v-list-tile>-->
+<!--                      </template>-->
+<!--                    </v-combobox>-->
+<!--                    set a divider-->
+                    <v-divider class="my-5"></v-divider>
+                    <p class="subheading form-text-heading">
+                      <v-icon class="mr-1" color="#40C4FF">fal fa-clipboard</v-icon>
+                      Please leave a note, which ways they can get their stuff back...
+                    </p>
+                    <v-textarea
+                      name="note"
+                      id="note"
+                      v-model="note"
+                      :counter="80"
+                      :rules="noteRules"
+                      required
+                      color="#FFC107"
+                      outline
+                      flat
+                      placeholder="Note might be your Phone Number/Email or pure note, Also you can bring the stuff to your nearest City Mini Market, We will put it into our LostFounds warehouse...  "
+                    >
+                    </v-textarea>
                   </v-flex>
                 </v-layout>
               </form>
             </v-container>
-<!--            set found location-->
           </v-card>
         </v-dialog>
     </v-flex>
@@ -103,18 +179,19 @@
 </v-container>
 </template>
 
-<script>
+<script>import firebase from 'firebase'
+
 export default {
   name: 'Home',
   data () {
     return {
       imageUrl: '',
-      image: null,
-      dialog: false,
-      notifications: false,
-      imageBanner: require('@/assets/img/home-ban.png'),
+      note: '',
+      category: '',
+      foundAt: '',
+      citySelector: '',
+      cityoption: ['abc', 'ted', 'sdf', 'Dunedin', 'otago center'],
       // set item category combobox
-      select: 'Wallet',
       itemsCategory: [
         'Book',
         'Cellphone',
@@ -126,14 +203,43 @@ export default {
         'Student Id card',
         'Wallet'
       ],
+      dunedinDistrict: [ ],
       // end
+      noteRules: [
+        v => !!v || 'Note is required',
+        v => (v && v.length <= 80) || 'Note must be less than 80 characters'
+      ],
+      image: null,
+      dialog: false,
+      notifications: false,
+      imageBanner: require('@/assets/img/home-ban.png'),
       // set input rules
       rules: {
         required: value => !!value || 'Required.'
-      }
+      },
+      // set regions input selection
+      search: null
     }
   },
+  computed: {
+    formIsValid () {
+      return this.category !== '' && this.foundAt !== '' && this.note !== '' && this.imageUrl !== ''
+    }
+  },
+  // watch: {
+  //   // add watch to region selector
+  //   foundAt (val) {
+  //     if (val.length > 2) {
+  //       this.$nextTick(() => this.foundAt.pop())
+  //     }
+  //   }
+  // },
   methods: {
+    // Set regions that can be closed once users had picked a region
+    toggleMenu (val) {
+      if (val.length) this.$refs['combobox'].blur()
+    },
+    // end
     onPickFile () {
       this.$refs.fileInput.click()
     },
@@ -150,7 +256,31 @@ export default {
       })
       fileReader.readAsDataURL(files[0])
       this.image = files[0]
+    },
+    // Set method for uploading a new wareHouse item
+    onCreateWarehouseItem () {
+      console.log('12312')
+      const warehouseItemData = {
+        category: this.category,
+        imageUrl: this.imageUrl,
+        foundAt: this.foundAt,
+        note: this.note,
+        UploadDate: new Date()
+      }
+      this.$store.dispatch('createWarehouseItem', warehouseItemData)
+      this.$router.push('/lostFoundsWarehouses')
     }
+  },
+  created () { // fetch Dunedin districts data from firebase
+    let db = firebase.firestore()
+    db.collection('dunedinDistrict').get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          let dunedinRegions = doc.data()
+          dunedinRegions.id = doc.id
+          this.dunedinDistrict.push(dunedinRegions)
+        })
+      })
   }
 }
 </script>

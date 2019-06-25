@@ -18,6 +18,9 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import store from './store'
 import AlertCmp from './components/Alert'
 import '@fortawesome/fontawesome-pro/css/all.css'
+import DateFilter from './filter/date'
+
+Vue.filter('date', DateFilter)
 
 Vue.use(Vuetify, {
   iconfont: 'fa' // 'md' || 'mdi' || 'fa' || 'fa4'

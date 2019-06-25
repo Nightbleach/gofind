@@ -12,7 +12,7 @@
              <v-card color="blue accent-2">
                  <v-card-actions>
                    <v-icon class="white--text pl-2" left>fab fa-google</v-icon>
-                   <v-btn flat block class="white--text text-capitalize google-text title font-weight-black">Continue with Google</v-btn>
+                   <v-btn @click="socialLogin" flat block class="white--text text-capitalize google-text title font-weight-black">Continue with Google</v-btn>
                  </v-card-actions>
              </v-card>
            </v-flex>
@@ -85,7 +85,7 @@
 </v-container>
 </template>
 
-<script>
+<script>import firebase from 'firebase'
 export default {
   name: 'Signup',
   data () {
@@ -133,6 +133,15 @@ export default {
     onDismissed () {
       console.log('Dismissed Alert!')
       this.$store.dispatch('clearError')
+    },
+    // Login with google
+    socialLogin () {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase.auth().signInWithPopup(provider).then((result) => {
+        this.$router.replace('/')
+      }).catch((err) => {
+        alert('Oops.' + err.message())
+      })
     }
   }
 }

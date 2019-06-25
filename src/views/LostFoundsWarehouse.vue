@@ -13,9 +13,9 @@
         </v-img>
         <v-card-text>
           <div class="info--text">Category: {{warehouse.category}}</div>
-          <div class="info--text">This was found at: {{warehouse.FoundAt}}</div>
-          <div class="info--text">Uploaded date: {{warehouse.UploadDate}}</div>
-          <div class="info--text">Contact: {{warehouse.ContactInfo}}</div>
+          <div class="info--text">This was found at: {{warehouse.foundAt}}</div>
+          <div class="info--text">Uploaded date: {{warehouse.UploadDate | date }}</div>
+          <div class="info--text">Note: {{warehouse.note}}</div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

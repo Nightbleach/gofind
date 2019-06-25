@@ -50,5 +50,17 @@ export default {
   },
   clearError ({commit}) {
     commit('clearError')
+  },
+  createWarehouseItem ({commit}, payload) {
+    const warehouseItem = {
+      category: payload.category,
+      imageUrl: payload.imageUrl,
+      foundAt: payload.foundAt,
+      note: payload.note,
+      UploadDate: payload.UploadDate,
+      id: 'asdasdasd'
+    }
+    // Reach out to firebase and store it
+    commit('createWarehouseItem', warehouseItem)
   }
 }
