@@ -10,13 +10,14 @@
   <v-divider class="mt-1 mb-0 pb-0"></v-divider>
   <Searchbar></Searchbar>
   <v-divider></v-divider>
+  <rise-loader :loading="loading" color="#FFCA28" style="margin-top: 8rem"></rise-loader>
 <!--  start product card display-->
     <v-layout row wrap>
       <v-flex xs12 sm6 md4 xl3
               v-for="item in warehouses"
               :key="item.id"
-              @click="onLoadWarehouse(item.id)">
-        <v-card hover :to="'/LostFoundsWarehouses/' + item.id"
+              >
+        <v-card hover :to="{name: 'LostFoundsWarehouse', params:{warehouse_note: item.note }}"
         >
             <v-img
               :src='item.imageUrl'
@@ -61,30 +62,57 @@
 </template>
 
 <script> import Searchbar from '../components/Searchbar'
+import db from '../firebase/firebaseinit'
+import RiseLoader from 'vue-spinner/src/RiseLoader'
 export default {
   name: 'LostItemStorage',
   components: {
-    Searchbar
+    Searchbar,
+    RiseLoader
   },
   data () {
     return {
       storageBanner: require('@/assets/img/1.png'),
       creatorIcon: [
-        { id: '1', img: require('@/assets/img/creator-icon/man1.png') }
-      ]
-    }
-  },
-  // get data from vuex store
-  computed: {
-    warehouses () {
-      return this.$store.getters.loadedWarehouses
+        {id: '1', img: require('@/assets/img/creator-icon/man1.png')}
+      ],
+      warehouses: [],
+      loading: true
     }
   },
   methods: {
-    onLoadWarehouse (id) {
-      this.$router.push('/LostFoundsWarehouses/' + id)
-    }
+    // onLoadWarehouse (id) {
+    //   this.$router.push('/LostFoundsWarehouses/' + id)
+    // }
+  },
+  created () {
+    // fetch data from firestore
+    db.collection('warehouses').orderBy('UploadDate', 'desc').onSnapshot(res => {
+      const changes = res.docChanges()
+      changes.forEach(change => {
+        if (change.type === 'added') {
+          this.warehouses.push({
+            ...change.doc.data(),
+            id: change.doc.id
+          })
+          this.loading = false
+        }
+      })
+    })
   }
+  //   db.collection('warehouses').orderBy('UploadDate').get().then(querysnapshot => {
+  //     querysnapshot.forEach(doc => {
+  //       const data = {
+  //         'category': doc.data().category,
+  //         'imageUrl': doc.data().imageUrl,
+  //         'foundAt': doc.data().foundAt,
+  //         'note': doc.data().note,
+  //         'UploadDate': doc.data().UploadDate
+  //       }
+  //       this.warehouses.push(data, doc.id)
+  //     })
+  //   })
+// }
 }
 </script>
 

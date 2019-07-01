@@ -1,7 +1,7 @@
 <template>
-<v-container class="signup-con">
+<v-container class="signup-con" fluid>
   <v-layout row no-wrap justify-center class="mt-1">
-    <v-flex xs12 md6 lg5 class="mt-3">
+    <v-flex xs12 md6 lg5 offset-md1 class="mt-3">
       <div class="signup-l-text mt-2  mb-3 font-weight-black justify-center">Help people to find their treasure ?</div>
       <p class="subheading mt-2 signup-l-text2 wrap">Just upload the thing  and 'where did you find' info</p>
       <p class="subheading mt-2 signup-l-text2 wrap">you're so Kind!</p>
@@ -10,9 +10,9 @@
          <v-layout>
            <v-flex xs12>
              <v-card color="blue accent-2">
-                 <v-card-actions>
+                 <v-card-actions class="light-blue accent-2">
                    <v-icon class="white--text pl-2" left>fab fa-google</v-icon>
-                   <v-btn @click="socialLogin" flat block class="white--text text-capitalize google-text title font-weight-black">Continue with Google</v-btn>
+                   <v-btn @click="socialLogin" flat block class="white--text  text-capitalize google-text title font-weight-black">Continue with Google</v-btn>
                  </v-card-actions>
              </v-card>
            </v-flex>
@@ -62,7 +62,7 @@
                      >
                    </v-text-field>
                    <p class="policy">(We won't share it with others)</p>
-                   <v-btn type="submit" large block flat class="cr-acc mt-4 title text-capitalize success font-weight-bold">Create an account</v-btn>
+                   <v-btn type="submit" large block flat class="cr-acc mt-4 title text-capitalize amber lighten-1 font-weight-bold white--text">Create an account</v-btn>
                  </v-form>
 
            </v-flex>
@@ -72,13 +72,15 @@
       </v-card>
     </v-flex>
 
-    <v-flex class="hidden-sm-and-down img-people-head"  md6 lg4 offset-md1>
-      <v-img :src="image" contain  position="bottom center"></v-img>
+    <v-flex class="hidden-sm-and-down img-people-head mt-5"  md6 lg4 offset-md1>
+      <div>
+      <v-img :src="image" width="380" contain  position="bottom center"></v-img>
       <div class="tr">
         <p class="title font-weight-medium pt-5">Help people can:</p>
         <p class="subheading font-weight-regular"><span class="ted fal fa-people-carry pr-2"></span>make us better</p>
         <p class="subheading font-weight-regular"><span class="fal fa-city pr-2" style="color:orange;"></span>make society better</p>
         <p class="subheading font-weight-regular"><span class="fal fa-globe-asia world pr-2"></span>make world better</p>
+      </div>
       </div>
     </v-flex>
   </v-layout>
@@ -92,7 +94,7 @@ export default {
     return {
       show1: false,
       show2: false,
-      image: require('@/assets/img/people-head.png'),
+      image: require('@/assets/img/logup-head.jpg'),
       email: '',
       password: '',
       confirmPassword: '',

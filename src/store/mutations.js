@@ -11,8 +11,5 @@ export default {
   },
   clearError (state) {
     state.error = null
-  },
-  createWarehouseItem (state, payload) {
-    state.loadedWarehouses.push(payload)
   }
 }

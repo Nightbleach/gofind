@@ -33,7 +33,7 @@
               <v-toolbar-title>3 steps that you can help others to find their stuff</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-items>
-                <v-btn type="submit" form ="warehouseItemUpload" dark flat :disabled="!formIsValid"  class="text-capitalize subheading upload-text" >Upload</v-btn>
+                <v-btn type="submit" form ="warehouseItemUpload" dark flat :disabled="!formIsValid"  class="text-capitalize subheading upload-text" >Submit</v-btn>
               </v-toolbar-items>
             </v-toolbar>
 <!--         second toolbar end   -->
@@ -65,15 +65,21 @@
                      <v-icon class="mr-1" color="#40C4FF">fal fa-image</v-icon>
                      What does stuff look like ?
                    </p>
-                   <v-btn
-                     small
-                     raised
-                     round
-                     flat
-                     class="amber lighten-2 text-capitalize white--text ml-4"
-                     @click="onPickFile"
-                     style="cursor: pointer"
-                   >Add/Replace Image</v-btn>
+                   <v-tooltip top color="#FBC02D">
+                     <template v-slot:activator="{ on }">
+                       <v-btn
+                         v-on="on"
+                         small
+                         raised
+                         round
+                         flat
+                         class="amber lighten-2 text-capitalize white--text ml-4"
+                         @click="onPickFile"
+                         style="cursor: pointer"
+                       >Add/Replace Image</v-btn>
+                     </template>
+                     <span class="tooltip-text">The image size has to be less than 1MB</span>
+                   </v-tooltip>
                    <input
                      type="file"
                      style="display: none"
@@ -174,8 +180,8 @@
 </v-container>
 </template>
 
-<script> // import firebase from 'firebase'
-
+<script>
+import db from '../firebase/firebaseinit'
 export default {
   name: 'Home',
   data () {
@@ -485,6 +491,7 @@ export default {
         'Dalmore, Gladstone Rd',
         'Dalmore, Orbell St',
         'Dalmore, Ramsay',
+        'Dunedin Airport',
         'Diabetes Otago Inc old building',
         'Dietetics Clinics',
         'Dunedin Central, Cobden St',
@@ -1543,6 +1550,25 @@ export default {
     }
   },
   methods: {
+    // create a document in cloud firestore
+    onCreateWarehouseItem () {
+      db.collection('warehouses').add({
+        category: this.category,
+        imageUrl: this.imageUrl,
+        foundAt: this.foundAt,
+        note: this.note,
+        UploadDate: new Date().toISOString()
+      })
+        .then(docRef => this.$router.push('/lostFoundsWarehouses'))
+        // eslint-disable-next-line handle-callback-err
+        .catch(error => this.$swal({
+          title: 'Invalid Image Size!',
+          text: 'Image size has to be less than 1MB!',
+          confirmButtonColor: '#4FC3F7',
+          iconColor: '#FFB300',
+          imageUrl: require('@/assets/img/warning.png')
+        }))
+    },
     onPickFile () {
       this.$refs.fileInput.click()
     },
@@ -1559,35 +1585,15 @@ export default {
       })
       fileReader.readAsDataURL(files[0])
       this.image = files[0]
-    },
-    // Set method for uploading a new wareHouse item
-    onCreateWarehouseItem () {
-      const warehouseItemData = {
-        category: this.category,
-        imageUrl: this.imageUrl,
-        foundAt: this.foundAt,
-        note: this.note,
-        UploadDate: new Date()
-      }
-      this.$store.dispatch('createWarehouseItem', warehouseItemData)
-      this.$router.push('/lostFoundsWarehouses')
     }
+
   }
-  // created () { // fetch Dunedin districts data from firebase
-  //   let db = firebase.firestore()
-  //   db.collection('dunedinDistrict').get()
-  //     .then(snapshot => {
-  //       snapshot.docs.forEach(doc => {
-  //         let dunedinRegions = doc.data()
-  //         dunedinRegions.id = doc.id
-  //         this.dunedinDistrict.push(dunedinRegions)
-  //       })
-  //     })
-  // }
 }
 </script>
 
 <style lang="stylus" scoped>@import '../stylus/main.styl'
+.tooltip-text
+  font-family Montserrat
 .form-text-heading
   color #424242
 .home-btn

@@ -3,13 +3,13 @@
   <v-layout class="login-layout mt-2" row justify-center no-wrap>
     <v-flex xs10 sm7 md7 lg6 class="mt-5">
       <div class="login-text font-weight-bold">Login to your account</div>
-      <v-btn large block color="blue accent-2"
+      <v-btn large block color="light-blue accent-2"
              class="white--text mt-4 login-btn mb-4 social-button"
              v-for=" item in logInBtn" :key="item.name"
              @click="socialLogin"
       >
         <v-icon left>{{item.name}}</v-icon>
-        <div class="text-capitalize font-weight-bold subheading">{{item.description}}</div>
+        <div class="text-capitalize  font-weight-bold subheading">{{item.description}}</div>
       </v-btn>
       <div class="divider01 mb-5">or</div>
       <div v-if="error">
@@ -38,7 +38,7 @@
           prepend-icon="fal fa-lock-alt"
           required>
         </v-text-field>
-        <v-btn type="submit" large block flat class="mt-4 headline text-capitalize success font-weight-bold">Login</v-btn>
+        <v-btn type="submit" large block flat class="mt-4 headline text-capitalize amber lighten-1 white--text font-weight-bold">Login</v-btn>
       </v-form>
       <div class="create-account-text justify-center title mt-5">Don't have an account?<router-link  class="blue--text ml-2 hover-signup" cursor="pointer" tag="a" to="/signup">Signup</router-link></div>
     </v-flex>

@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import firebase from 'firebase/app'
 // import firebase
 import 'firebase/auth'
 import 'firebase/database'
@@ -19,9 +18,11 @@ import store from './store'
 import AlertCmp from './components/Alert'
 import '@fortawesome/fontawesome-pro/css/all.css'
 import DateFilter from './filter/date'
+// import vue-spinner
+import VueSweetalert2 from 'vue-sweetalert2'
 
 Vue.filter('date', DateFilter)
-
+Vue.use(VueSweetalert2)
 Vue.use(Vuetify, {
   iconfont: 'fa' // 'md' || 'mdi' || 'fa' || 'fa4'
 })
@@ -31,34 +32,13 @@ fastClick.attach(document.body)
 
 Vue.component('app-alert', AlertCmp)
 
-// const config = {
-//   apiKey: 'AIzaSyAVHB45obUoQcdpX0ULufvTjqQPaBfBwis',
-//   authDomain: 'gofind-5302b.firebaseapp.com',
-//   databaseURL: 'https://gofind-5302b.firebaseio.com',
-//   projectId: 'gofind-5302b',
-//   storageBucket: 'gofind-5302b.appspot.com',
-//   messagingSenderId: '1067284971488',
-//   appId: '1:1067284971488:web:fd14e6bf8fe24dfb'
-// }
-//
-// firebase.initializeApp(config)
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {App},
   template: '<App/>',
   created () {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyAVHB45obUoQcdpX0ULufvTjqQPaBfBwis',
-      authDomain: 'gofind-5302b.firebaseapp.com',
-      databaseURL: 'https://gofind-5302b.firebaseio.com',
-      projectId: 'gofind-5302b',
-      storageBucket: 'gofind-5302b.appspot.com',
-      messagingSenderId: '1067284971488',
-      appId: '1:1067284971488:web:fd14e6bf8fe24dfb'
-    })
   }
 })

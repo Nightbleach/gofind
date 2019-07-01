@@ -1,6 +1,7 @@
 /* 包含多个接受组件通知触发mutation调用间接更新状态的方法的对象
 * actions存的 一般都是方法 */
 import firebase from 'firebase/app'
+import 'firebase/firestore'
 import 'firebase/auth'
 
 export default {
@@ -50,17 +51,5 @@ export default {
   },
   clearError ({commit}) {
     commit('clearError')
-  },
-  createWarehouseItem ({commit}, payload) {
-    const warehouseItem = {
-      category: payload.category,
-      imageUrl: payload.imageUrl,
-      foundAt: payload.foundAt,
-      note: payload.note,
-      UploadDate: payload.UploadDate,
-      id: 'asdasdasd'
-    }
-    // Reach out to firebase and store it
-    commit('createWarehouseItem', warehouseItem)
   }
 }

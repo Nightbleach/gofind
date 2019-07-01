@@ -31,7 +31,7 @@ export default new Router({
       component: LostFoundsWarehouses
     },
     {
-      path: '/LostFoundsWarehouses/:id',
+      path: '/LostFoundsWarehouses/:warehouse_note',
       props: true,
       name: 'LostFoundsWarehouse',
       component: LostFoundsWarehouse
