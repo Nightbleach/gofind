@@ -182,6 +182,7 @@
 
 <script>
 import db from '../firebase/firebaseinit'
+import firebase from 'firebase'
 export default {
   name: 'Home',
   data () {
@@ -1548,6 +1549,9 @@ export default {
     formIsValid () {
       return this.category !== '' && this.foundAt !== '' && this.note !== '' && this.imageUrl !== ''
     }
+  },
+  mounted () {
+    console.log(firebase.auth().currentUser)
   },
   methods: {
     // create a document in cloud firestore

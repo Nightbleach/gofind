@@ -5,6 +5,7 @@ import Login from '../views/Login'
 import Signup from '../views/Signup'
 import LostFoundsWarehouses from '../views/LostFoundsWarehouses'
 import LostFoundsWarehouse from '../views/LostFoundsWarehouse'
+import NotFound from '../views/NotFound'
 
 Vue.use(Router)
 
@@ -35,7 +36,11 @@ export default new Router({
       props: true,
       name: 'LostFoundsWarehouse',
       component: LostFoundsWarehouse
-
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound
     }
   ],
   mode: 'history'

@@ -1,7 +1,7 @@
 <template>
 <v-container>
   <v-layout class="login-layout mt-2" row justify-center no-wrap>
-    <v-flex xs10 sm7 md7 lg6 class="mt-5">
+    <v-flex xs12 sm10 md8 lg7 class="mt-5 px-5">
       <div class="login-text font-weight-bold">Login to your account</div>
       <v-btn large block color="light-blue accent-2"
              class="white--text mt-4 login-btn mb-4 social-button"
@@ -12,10 +12,19 @@
         <div class="text-capitalize  font-weight-bold subheading">{{item.description}}</div>
       </v-btn>
       <div class="divider01 mb-5">or</div>
-      <div v-if="error">
-        <app-alert @dismissed="onDismissed" :text ="error.message" ></app-alert>
+      <div>
+        <v-alert
+          dismissible
+          type="error"
+          class="alert-text"
+          outline
+          v-if="errorFeedback"
+          v-model="errorFeedback"
+        >
+          {{errorFeedback}}
+        </v-alert>
       </div>
-      <v-form @submit.prevent="onSignin" class="mt-3">
+      <v-form @submit.prevent="onLogin" class="mt-3">
         <v-text-field
         lazy-validation
         autocomplete="off"
@@ -54,7 +63,6 @@ export default {
     return {
       logInBtn: [
         {name: 'fab fa-google', description: 'Continue with Google'}
-        // {name: 'fab fa-facebook', description: 'Login with Facebook'}
       ],
       email: '',
       password: '',
@@ -63,16 +71,8 @@ export default {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Invalid e-mail.'
         }
-      }
-    }
-  },
-  computed: {
-    // Get user info from store=> getters
-    user () {
-      return this.$store.getters.user
-    },
-    error () {
-      return this.$store.getters.error
+      },
+      errorFeedback: null
     }
   },
   // If user had logged in , then it will route to the home page
@@ -85,12 +85,20 @@ export default {
   },
   methods: {
     // Signin function that allows user to signin our app
-    onSignin () {
-      /* Use Vuex to store action mutation auth */
-      this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
-    },
-    onDismissed () {
-      this.$store.dispatch('clearError')
+    onLogin () {
+      if (this.email && this.password) {
+        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+          .then(cred => {
+            console.log(cred.user)
+            this.$router.push('/')
+          })
+          .catch(err => {
+            this.errorFeedback = err.message
+          })
+        this.errorFeedback = null
+      } else {
+        this.errorFeedback = 'Please fill in both fields'
+      }
     },
     socialLogin () {
       const provider = new firebase.auth.GoogleAuthProvider()
@@ -105,6 +113,10 @@ export default {
 </script>
 
 <style  lang="stylus" scoped>@import '../stylus/main.styl'
+.alert-text
+  font-family Montserrat !important
+  /*word-break break-all*/
+  white-space normal
 .create-account-text
   text-align center
   color: #3D414A

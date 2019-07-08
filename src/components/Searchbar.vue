@@ -10,12 +10,14 @@
         class="searchBar py-0 mb-0 "
         append-icon="fal fa-search"
         autofocus
+        v-model="search"
+        :warehousedata="warehouses"
       >
       </v-text-field>
     </v-flex>
     <v-flex xs12 sm12 lg7 md7 xl7 class="pt-4 explain-text">
       <v-icon small flat color="#54BDAF" class="mt-0">fal fa-exclamation</v-icon>
-      <span class="explain-text body-2" >Go search type of goods or even location where you lost them</span>
+      <span class="explain-text body-2" >Go search type of goods or even location where you might lost them</span>
     </v-flex>
   </v-layout>
 </template>
@@ -25,7 +27,18 @@ export default {
   name: 'Search-algolia',
   data () {
     return {
-      select: 'Iphone'
+      select: 'Iphone',
+      search: ''
+    }
+  },
+  props: ['warehousedata'],
+  computed: {
+    computed: {
+      getWarehouses () {
+        return this.warehouses.filter(item => {
+          return item.category.toLowerCase().includes(this.search.toLowerCase())
+        })
+      }
     }
   }
 }

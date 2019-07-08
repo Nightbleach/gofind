@@ -57,16 +57,16 @@
               >far fa-search
             </v-icon>
           </v-btn>
-<!--        </v-btn>-->
-<!-- copy 结束-->
-<!--        <v-btn flat color="white" @click="searchInput">-->
-<!--          <v-icon class="search-icon" right>fas fa-search</v-icon>-->
-<!--        </v-btn>-->
-        <v-btn flat color="white" class="hidden-xs-only">
+
+        <v-btn flat color="white" class="hidden-xs-only" v-if="!user">
           <router-link to="/login" tag="span">
             <v-icon left>fal fa-user</v-icon>
             <span class="title text-capitalize nav-login-text">Login</span>
           </router-link>
+        </v-btn>
+        <v-btn v-if="user" flat color="white" class="hidden-xs-only" @click="logOut">
+            <v-icon left>fal fa-sign-out</v-icon>
+            <span class="title text-capitalize nav-login-text">Log out</span>
         </v-btn>
       </v-toolbar-items>
       <v-toolbar-side-icon class="white--text hidden-sm-and-up mt-2" @click.stop="navDrawer=!navDrawer"></v-toolbar-side-icon>
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   name: 'Navbar',
   data () {
@@ -87,12 +88,27 @@ export default {
         {icon: 'fa-user-astronaut', title: 'Search your treasure', route: '/'},
         {icon: 'fas fa-child', title: 'Sign in', route: '/login'},
         {icon: 'fas fa-user-plus', title: 'Sign up', route: '/signup'}
-      ]
+      ],
+      user: null
     }
+  },
+  created () {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.user = user
+      } else {
+        this.user = null
+      }
+    })
   },
   methods: {
     callItBack () {
       alert('function called')
+    },
+    logOut () {
+      firebase.auth().signOut().then(() => {
+        this.$router.push('/signup')
+      })
     },
     searchInput () {
     }

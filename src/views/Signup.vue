@@ -18,12 +18,28 @@
            </v-flex>
          </v-layout>
          <v-divider class="my-4"></v-divider>
-         <div v-if="error">
-           <app-alert @dismissed="onDismissed" :text ="error.message" ></app-alert>
-         </div>
+           <v-alert
+             dismissible
+             type="error"
+             class="alert-text"
+             outline
+             v-if="errorFeedback"
+             v-model="errorFeedback"
+           >
+             {{errorFeedback}}
+           </v-alert>
          <v-layout>
            <v-flex xs12>
                  <v-form @submit.prevent="onSignup">
+                   <v-text-field
+                     autocomplete="off"
+                     label="Alias"
+                     name="Alias"
+                     prepend-icon="fal fa-file-signature"
+                     v-model="alias"
+                     :rules="nameRules"
+                   >
+                   </v-text-field>
                    <v-text-field
                      autocomplete="off"
                      label="Enter email"
@@ -88,6 +104,8 @@
 </template>
 
 <script>import firebase from 'firebase'
+import db from '../firebase/firebaseinit'
+import slugify from 'slugify'
 export default {
   name: 'Signup',
   data () {
@@ -103,19 +121,19 @@ export default {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Invalid e-mail.'
         }
-      }
+      },
+      nameRules: [
+        v => !!v || 'Alias is required',
+        v => (v && v.length <= 12) || 'Alias must be less than 12 characters'
+      ],
+      errorFeedback: null,
+      alias: null,
+      slug: null
     }
   },
   computed: {
     comparePasswords () {
       return this.password !== this.confirmPassword ? 'Sorry, your passwords do not match' : ''
-    },
-    // Get user info from store=> getters
-    user () {
-      return this.$store.getters.user
-    },
-    error () {
-      return this.$store.getters.error
     }
   },
   // If user had logged in , then it will route to the home page
@@ -129,11 +147,35 @@ export default {
   methods: {
     // Signup function that allows user to signup our app
     onSignup () {
-      /* Use Vuex to store action mutation auth */
-      this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
-    },
-    onDismissed () {
-      this.$store.dispatch('clearError')
+      // new way to let user signUp
+      if (this.alias && this.email && this.password) {
+        this.slug = slugify(this.alias, {
+          replacement: '-',
+          remove: /[$*_+~.()'"!\-:@]/g,
+          lower: true
+        })
+        let ref = db.collection('users').doc(this.slug)
+        ref.get().then(doc => {
+          if (doc.exists) {
+            this.errorFeedback = 'This alias already exists'
+          } else {
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+              .then(cred => {
+                ref.set({
+                  alias: this.alias,
+                  user_id: cred.user.uid
+                })
+              }).then(() => {
+                this.$router.push('/')
+              })
+              .catch(err => {
+                this.errorFeedback = err.message
+              })
+          }
+        })
+      } else {
+        this.errorFeedback = 'You must enter all fields'
+      }
     },
     // Login with google
     socialLogin () {
@@ -149,6 +191,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>@import '../stylus/main.styl'
+.alert-text
+  font-family Montserrat !important
+  /*word-break break-all*/
+  white-space normal
 .img-people-head
   margin-top 6rem
   .tr
