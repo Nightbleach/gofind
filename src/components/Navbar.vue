@@ -76,10 +76,16 @@
 
 <script>
 import firebase from 'firebase'
+import algoliasearch from 'algoliasearch'
 export default {
   name: 'Navbar',
   data () {
     return {
+      searchClient: algoliasearch(
+        'Z4VDIUE2GF',
+        '7d643c98f0574c73cedd655697584780'
+      ),
+      searchMenuVisibility: false,
       openSearch: false,
       showText: false,
       search: null,
@@ -121,23 +127,22 @@ export default {
 
 <style lang="stylus" scoped>@import '../stylus/main.styl'
 // set the size of search bar start
-.search-textField
-  width 26rem
-  font-family Montserrat
-+for_breakpoint(tablet)
   .search-textField
-    width 29rem
-    height 60px
-@media (min-width: 688px) and (max-width: 855px)
-  .search-textField
-    width:20rem
-@media (max-width: 550px)
-  .search-textField
-    width:22rem
-@media (max-width: 466px)
-  .search-textField
-    width:18.4rem
-
+    width 26rem
+    font-family Montserrat
+  +for_breakpoint(tablet)
+    .search-textField
+      width 29rem
+      height 60px
+  @media (min-width: 688px) and (max-width: 855px)
+    .search-textField
+      width:20rem
+  @media (max-width: 550px)
+    .search-textField
+      width:22rem
+  @media (max-width: 466px)
+    .search-textField
+      width:18.4rem
 // set the size of search bar  end
   .nav-login-text
     font-family Montserrat !important

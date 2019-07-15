@@ -67,8 +67,10 @@
                   <span>Category: {{item.category}}</span>
                 </div>
                 <div class="mb-2">
-                  <v-icon color="#00B0FF" class="mr-2">fal fa-map-marked-alt</v-icon>
-                  <span>Found at: {{item.foundAt}}</span>
+                  <div>
+                    <v-icon color="#00B0FF" class="mr-2">fal fa-map-marked-alt</v-icon>
+                    <span>Found at: {{item.foundAt}}</span>
+                  </div>
                 </div>
                 <div class="mb-2">
                 <v-icon color="#1DE9B6" class="mr-2">fal fa-clock</v-icon>
@@ -94,7 +96,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout justify-center row>
+    <v-layout justify-center row v-show="showLoading2">
       <v-flex shrink>
        <v-btn
          round
@@ -135,6 +137,7 @@ export default {
       loading: true,
       loader: null,
       loading2: false,
+      showLoading2: false,
       search: '',
       seeing: false,
       paging: {
@@ -194,7 +197,7 @@ export default {
         return
       }
       this.paging.loading = true
-      this.loading2 = true // when more data is comming, start loading
+      this.loading2 = true // when more data is coming, start loading
       this.handleWarehouses(this.ref.warehousesNext).then((documentSnapshots) => {
         this.paging.loading = false
         this.loading2 = false // When data was fetched, end loading
@@ -224,6 +227,7 @@ export default {
             this.warehouses.push(warehousesData)
           })
           this.loading = false
+          this.showLoading2 = true
           /* Build reference for next page */
           const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
           if (!lastVisible) {

@@ -174,7 +174,7 @@ export default {
           }
         })
       } else {
-        this.errorFeedback = 'You must enter all fields'
+        this.errorFeedback = 'You must fill all fields'
       }
     },
     // Login with google

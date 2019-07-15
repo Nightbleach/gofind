@@ -7,6 +7,67 @@
           <template v-slot:activator="{ on }">
             <v-container text-xs-center class="home-btn">
               <v-layout justify-center row fill-height wrap>
+<!--                <v-flex xs12>-->
+<!--                  <v-menu max-height="400" v-model="searchMenuVisibility"-->
+<!--                          :close-on-content-click="false"-->
+<!--                          nudge-bottom="10"-->
+<!--                          lazy-->
+<!--                          transition="scale-transition"-->
+<!--                          offset-y-->
+<!--                          full-width-->
+<!--                          min-width="290px">-->
+<!--                    <v-text-field-->
+<!--                      slot="activator"-->
+<!--                      @keyup="searchMenuVisibility=true"-->
+<!--                      v-model="searchQuery"-->
+<!--                      label="Quick Search"-->
+<!--                      round-->
+<!--                      autofocus-->
+<!--                      color="orange"-->
+<!--                      clearable-->
+<!--                      flat-->
+<!--                      outline-->
+<!--                      light-->
+<!--                      box-->
+<!--                      class="ml-2 search-textField"-->
+<!--                      append-icon="fal fa-search"-->
+<!--                      single-line-->
+<!--                      hide-details-->
+<!--                      background-color="orange"-->
+<!--                    >-->
+<!--                    </v-text-field>-->
+<!--                    <ais-instant-search :search-client="searchClient" index-name="warehouses" :query="searchQuery" >-->
+<!--                      <ais-hits>-->
+<!--                        <template slot-scope="{item}">-->
+<!--                          <v-list-tile avatar :to="'/LostFoundsWarehouses/'+ item.note">-->
+<!--                            <v-list-tile-avatar>-->
+<!--                              <v-icon>{{item.imageUrl}}</v-icon>-->
+<!--                            </v-list-tile-avatar>-->
+<!--                            <v-list-tile-content>-->
+<!--                              <v-list-tile-title>-->
+<!--                                <ais-highlight :result="item" attribute="fountAt" >-->
+<!--                                  <div>{{item.category}}</div>-->
+<!--                                </ais-highlight>-->
+<!--                              </v-list-tile-title>-->
+<!--                            </v-list-tile-content>-->
+<!--                          </v-list-tile>-->
+<!--                        </template>-->
+<!--                      </ais-hits>-->
+<!--                    </ais-instant-search>-->
+<!--                  </v-menu>-->
+<!--                  <ais-instant-search :search-client="searchClient" index-name="warehouses">-->
+<!--                    <ais-search-box show-loading-indicator autofocus>-->
+<!--                    </ais-search-box>-->
+<!--                    <ais-powered-by/>-->
+<!--                    <ais-refinement-list attribute="category" />-->
+<!--                    <ais-hits v-show="searchMenuVisibility" @keyup="searchMenuVisibility=true">-->
+<!--                      <div slot="item" slot-scope="{ item }">-->
+<!--                        <h2>{{ item.foundAt }}</h2>-->
+
+<!--                      </div>-->
+<!--                    </ais-hits>-->
+<!--                  </ais-instant-search>-->
+<!--                </v-flex>-->
                 <v-flex xs12>
                   <v-btn
                     flat
@@ -183,10 +244,18 @@
 <script>
 import db from '../firebase/firebaseinit'
 import firebase from 'firebase'
+import algoliasearch from 'algoliasearch/lite'
+import 'instantsearch.css/themes/algolia-min.css'
 export default {
   name: 'Home',
   data () {
     return {
+      searchQuery: '',
+      searchClient: algoliasearch(
+        'Z4VDIUE2GF',
+        '7d643c98f0574c73cedd655697584780'
+      ),
+      searchMenuVisibility: false,
       imageUrl: '',
       note: '',
       category: '',

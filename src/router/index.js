@@ -6,6 +6,7 @@ import Signup from '../views/Signup'
 import LostFoundsWarehouses from '../views/LostFoundsWarehouses'
 import LostFoundsWarehouse from '../views/LostFoundsWarehouse'
 import NotFound from '../views/NotFound'
+import Comments from '../components/Comments'
 
 Vue.use(Router)
 
@@ -19,12 +20,14 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {transition: 'fade-in-up'}
     },
     {
       path: '/signup',
       name: 'Signup',
-      component: Signup
+      component: Signup,
+      meta: {transition: 'fade-in-right'}
     },
     {
       path: '/lostFoundsWarehouses',
@@ -36,6 +39,19 @@ export default new Router({
       props: true,
       name: 'LostFoundsWarehouse',
       component: LostFoundsWarehouse
+    },
+    {
+      path: '/LostFoundsWarehouses/:warehouse_note/comment',
+      name: 'Comments',
+      component: Comments,
+      props: true,
+      beforeEnter: (to, from, next) => {
+        if (to.params.alias) {
+          next()
+        } else {
+          next({name: 'LostFoundsWarehouses'})
+        }
+      }
     },
     {
       path: '*',
