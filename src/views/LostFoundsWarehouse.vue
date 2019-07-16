@@ -42,7 +42,7 @@
           class="mb-4"
         >
         </v-img>
-        <form @submit.prevent="enterComment">
+        <v-form @submit.prevent="enterComment" ref="form" v-model="valid">
           <v-text-field
             autocomplete="off"
             label="Enter your Alias: "
@@ -51,12 +51,13 @@
             v-model="alias"
             :rules="nameRules"
             class="mb-4"
+            :counter="12"
             lazy-validation
           >
           </v-text-field>
           <v-alert outline class="mt-0" type="error" dismissible v-if="feedback" v-model="feedback">{{feedback}}</v-alert>
-          <v-btn type="submit" block color="#20C1E6" class="subheading white--text text-capitalize enterComment mb-3">Enter Comments</v-btn>
-        </form>
+          <v-btn type="submit" :disabled="!valid" @click="validate" block color="#20C1E6" class="subheading white--text text-capitalize enterComment mb-3">Enter Comments</v-btn>
+        </v-form>
       </v-card>
     </v-flex>
 
@@ -66,7 +67,6 @@
 
 <script>
 import db from '../firebase/firebaseinit'
-import slugify from 'slugify'
 // import firebase from 'firebase'
 export default {
   name: 'SingleWarehouse',
@@ -86,7 +86,8 @@ export default {
         v => !!v || 'Alias is required',
         v => (v && v.length <= 12) || 'Alias must be less than 12 characters'
       ],
-      slug: null
+      slug: null,
+      valid: true
     }
   },
   created () {
@@ -99,24 +100,14 @@ export default {
     })
   },
   methods: {
+    validate () {
+      if (this.$refs.form.validate()) {
+        this.snackbar = true
+      }
+    },
     enterComment () {
       if (this.alias) {
-        this.slug = slugify(this.alias, {
-          replacement: '-',
-          remove: /[$*_+~.()'"!\-:@]/g,
-          lower: true
-        })
-        let ref = db.collection('comments').doc(this.slug)
-        ref.get().then(doc => {
-          if (doc.exists) {
-            this.feedback = 'This alias already exists'
-          } else {
-            this.feedback = 'this alias is free to use! '
-          }
-        })
         this.$router.push({name: 'Comments', params: {alias: this.alias}})
-      } else if (this.alias.stringLength() >= 12) {
-        this.feedback = 'Alias must be less than 12 characters'
       } else {
         this.feedback = 'You must enter an alias to add comments'
       }
