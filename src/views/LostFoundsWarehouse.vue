@@ -27,7 +27,7 @@
               <v-btn
                 color="#FFD54F"
                 class="subheading font-weight-medium text-capitalize comment mt-4"
-                @click="showWelcome = !showWelcome"
+                @click='onClick(warehouse)'
               >Comments</v-btn>
             </v-card-actions>
           </v-flex>
@@ -38,7 +38,7 @@
       <v-card class="px-4 py-4">
         <v-img
           :src="welcomeImage"
-          aspect-ratio="1.5"
+          aspect-ratio="1.41"
           class="mb-4"
         >
         </v-img>
@@ -111,6 +111,10 @@ export default {
       } else {
         this.feedback = 'You must enter an alias to add comments'
       }
+    },
+    onClick (item) {
+      this.showWelcome = !this.showWelcome
+      sessionStorage.userid = item.id
     }
   }
 }

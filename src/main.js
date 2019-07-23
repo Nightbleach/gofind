@@ -24,8 +24,10 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import InstantSearch from 'vue-instantsearch'
 import VuePageTransition from 'vue-page-transition'
 import VueChatScroll from 'vue-chat-scroll'
+import VueAutosuggest from 'vue-autosuggest'
 
 Vue.filter('date', DateFilter)
+Vue.use(VueAutosuggest)
 Vue.use(InstantSearch)
 Vue.use(VueSweetalert2)
 Vue.use(VuePageTransition)

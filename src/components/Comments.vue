@@ -27,6 +27,7 @@
                 <v-btn
                   color="#FFD54F"
                   class="subheading font-weight-medium text-capitalize comment mt-4"
+                  disabled
                 >Comments</v-btn>
               </v-card-actions>
             </v-flex>
@@ -94,13 +95,12 @@ export default {
         this.warehouse.id = doc.id
       })
     })
-    let refComments = db.collection('comments').orderBy('time')
+    let refComments = db.collection('comments').where('userId', '==', sessionStorage.userid)
     refComments.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
         if (change.type === 'added') {
           let doc = change.doc
           this.Comments.push({
-            id: doc.id,
             alias: doc.data().alias,
             content: doc.data().content,
             time: moment(doc.data().time).format('lll')

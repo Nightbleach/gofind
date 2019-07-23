@@ -30,6 +30,7 @@ export default {
     addComment () {
       if (this.newComment) {
         db.collection('comments').add({
+          userId: sessionStorage.userid,
           alias: this.alias,
           content: this.newComment,
           time: Date.now()

@@ -1,75 +1,47 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-<v-container>
+<v-container class="homePage">
 <!-- main home page start -->
   <v-layout align-center justify-center row>
     <v-flex>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <template v-slot:activator="{ on }">
             <v-container text-xs-center class="home-btn">
-              <v-layout justify-center row fill-height wrap>
-<!--                <v-flex xs12>-->
-<!--                  <v-menu max-height="400" v-model="searchMenuVisibility"-->
-<!--                          :close-on-content-click="false"-->
-<!--                          nudge-bottom="10"-->
-<!--                          lazy-->
-<!--                          transition="scale-transition"-->
-<!--                          offset-y-->
-<!--                          full-width-->
-<!--                          min-width="290px">-->
-<!--                    <v-text-field-->
-<!--                      slot="activator"-->
-<!--                      @keyup="searchMenuVisibility=true"-->
-<!--                      v-model="searchQuery"-->
-<!--                      label="Quick Search"-->
-<!--                      round-->
-<!--                      autofocus-->
-<!--                      color="orange"-->
-<!--                      clearable-->
-<!--                      flat-->
-<!--                      outline-->
-<!--                      light-->
-<!--                      box-->
-<!--                      class="ml-2 search-textField"-->
-<!--                      append-icon="fal fa-search"-->
-<!--                      single-line-->
-<!--                      hide-details-->
-<!--                      background-color="orange"-->
-<!--                    >-->
-<!--                    </v-text-field>-->
-<!--                    <ais-instant-search :search-client="searchClient" index-name="warehouses" :query="searchQuery" >-->
-<!--                      <ais-hits>-->
-<!--                        <template slot-scope="{item}">-->
-<!--                          <v-list-tile avatar :to="'/LostFoundsWarehouses/'+ item.note">-->
-<!--                            <v-list-tile-avatar>-->
-<!--                              <v-icon>{{item.imageUrl}}</v-icon>-->
-<!--                            </v-list-tile-avatar>-->
-<!--                            <v-list-tile-content>-->
-<!--                              <v-list-tile-title>-->
-<!--                                <ais-highlight :result="item" attribute="fountAt" >-->
-<!--                                  <div>{{item.category}}</div>-->
-<!--                                </ais-highlight>-->
-<!--                              </v-list-tile-title>-->
-<!--                            </v-list-tile-content>-->
-<!--                          </v-list-tile>-->
-<!--                        </template>-->
-<!--                      </ais-hits>-->
-<!--                    </ais-instant-search>-->
-<!--                  </v-menu>-->
-<!--                  <ais-instant-search :search-client="searchClient" index-name="warehouses">-->
-<!--                    <ais-search-box show-loading-indicator autofocus>-->
-<!--                    </ais-search-box>-->
-<!--                    <ais-powered-by/>-->
-<!--                    <ais-refinement-list attribute="category" />-->
-<!--                    <ais-hits v-show="searchMenuVisibility" @keyup="searchMenuVisibility=true">-->
-<!--                      <div slot="item" slot-scope="{ item }">-->
-<!--                        <h2>{{ item.foundAt }}</h2>-->
-
-<!--                      </div>-->
-<!--                    </ais-hits>-->
-<!--                  </ais-instant-search>-->
-<!--                </v-flex>-->
+              <v-layout justify-space-between row fill-height wrap align-center class="upload-btn mt-5" >
                 <v-flex xs12>
+                  <ais-instant-search
+                    index-name="warehouses"
+                    :search-client="searchClient"
+                  >
+                    <ais-autocomplete>
+                      <template slot-scope="{ currentRefinement, indices, refine }">
+                        <vue-autosuggest
+                          :suggestions="indicesToSuggestions(indices)"
+                          :input-props="{
+                            id:'autosuggest__input',
+                            style: 'width: 100%',
+                            onInputChange: refine,
+                            placeholder: 'Search here…',
+                             }"
+                        >
+                          <template slot-scope="{ suggestion }">
+                            <h5>
+                              <ais-highlight
+                                :hit="suggestion.item"
+                                attribute="name"
+                                v-if="suggestion.item.name"
+                              />
+                            </h5>
+                            <strong>{{ suggestion.item.category }}</strong>
+                            <span>{{suggestion.item.foundAt}}</span>
+                          </template>
+                        </vue-autosuggest>
+                      </template>
+                    </ais-autocomplete>
+                  </ais-instant-search>
+                </v-flex>
+                <v-flex xs12 md6>
                   <v-btn
+                    block
                     flat
                     round
                     class="text-capitalize btn-grad white--text yellow amber lighten-1 font-weight-black title "
@@ -78,8 +50,21 @@
                     <v-icon class="upload-icon ml-4" regular right>fal fa-cloud-upload</v-icon>
                   </v-btn>
                 </v-flex>
-                <v-flex xs12>
-                  <v-img :src="imageBanner"></v-img>
+                <v-flex xs12 md5>
+                  <router-link to="/lostFoundsWarehouses" tag="span">
+                    <v-btn
+                      block
+                      round
+                      class="text-capitalize white--text font-weight-black subheading"
+                      color="#ff7575"
+                    >
+                      Check our warehouse
+                      <v-icon
+                        right
+                        class="ml-4"
+                      >fal fa-warehouse-alt</v-icon>
+                    </v-btn>
+                  </router-link>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -250,12 +235,12 @@ export default {
   name: 'Home',
   data () {
     return {
-      searchQuery: '',
+      query: '',
+      searchMenuVisibility: false,
       searchClient: algoliasearch(
         'Z4VDIUE2GF',
         '7d643c98f0574c73cedd655697584780'
       ),
-      searchMenuVisibility: false,
       imageUrl: '',
       note: '',
       category: '',
@@ -1658,6 +1643,15 @@ export default {
       })
       fileReader.readAsDataURL(files[0])
       this.image = files[0]
+    },
+    // set up algolia on select
+    // onSelect (selected) {
+    //   if (selected) {
+    //     this.query = selected.item.name
+    //   }
+    // },
+    indicesToSuggestions (indices) {
+      return indices.map(({ hits }) => ({ data: hits }))
     }
 
   }
@@ -1665,6 +1659,35 @@ export default {
 </script>
 
 <style lang="stylus" scoped>@import '../stylus/main.styl'
+  .ais-Highlight-highlighted {
+    background: cyan;
+    font-style: normal;
+  }
+  .autosuggest__results-container {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+  .autosuggest__results-container ul {
+    margin: 0;
+    padding: 0;
+  }
+  .autosuggest__results_item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    list-style-type: none;
+    padding: 0.5em;
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .autosuggest__results_item img {
+    height: 3em;
+  }
+  .autosuggest__results_item-highlighted {
+    background-color: rgba(0, 0, 0, 0.24);
+  }
+  .ais-Hits-item img {
+    max-width: 100%;
+  }
 .tooltip-text
   font-family Montserrat
 .form-text-heading
@@ -1673,24 +1696,10 @@ export default {
   margin-top 11rem
   .btn-grad
     font-family Montserrat
-    width:40%
     word-spacing 0.25rem
   //.btn-grad:hover
-  +for_breakpoint(desktop)
-    .btn-grad
-      width:50%
-  +for_breakpoint(tablet)
-    .btn-grad
-      width 65%
-  +for_breakpoint(mobile)
-    .btn-grad
-      width 86%
-  +for_breakpoint(tinymobile)
-    .btn-grad
-      width 100%
   .upload-text
     font-family "Helvetica Neue"
   .form-text-font
     font-family "Adobe Caslon Pro"
-
 </style>

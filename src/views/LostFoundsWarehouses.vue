@@ -1,30 +1,31 @@
 <template>
 <v-container fluid grid-list-lg class="pt-1">
-  <back-to-top bottom="80px" right="50px" visibleoffset="450">
+  <back-to-top bottom="80px" right="50px" visibleoffset="250">
     <v-btn color="#FFD54F" fab dark>
       <v-icon medium>fal fa-arrow-alt-circle-up</v-icon>
     </v-btn>
   </back-to-top>
-  <v-layout row>
-    <v-flex xs12 class="pt-0" >
-      <v-card>
-          <v-img :src="storageBanner" aspect-ratio="5.1"></v-img>
-      </v-card>
-    </v-flex>
-  </v-layout>
+<!--  <v-layout row>-->
+<!--    <v-flex xs12 class="pt-0" >-->
+<!--      <v-card>-->
+<!--          <v-img :src="storageBanner" aspect-ratio="5.1"></v-img>-->
+<!--      </v-card>-->
+<!--    </v-flex>-->
+<!--  </v-layout>-->
   <v-divider class="mt-1 mb-0 pb-0"></v-divider>
 <!--search start-->
   <v-layout row wrap>
     <v-flex xs12 sm12 lg5 md5 xl5 class="mb-0 search">
       <v-text-field
         v-model="search"
-        label="go searching..."
+        label="Go Searching..."
         single-line
         outline
         color='orange'
         class="searchBar py-0 mb-0 "
         append-icon="fal fa-search"
         autofocus
+        background-color="#FF9966"
       >
       </v-text-field>
     </v-flex>
@@ -46,8 +47,6 @@
 <!--    search end -->
   </v-layout>
   <v-divider></v-divider>
-<!--  <rise-loader :loading="loading" color="#FFCA28" style="margin-top: 8rem" class="loader"></rise-loader>-->
-<!--  start product card display-->
     <v-layout row wrap>
       <v-flex xs12 sm6 md4 xl3
               v-for="item in getWarehouses"
