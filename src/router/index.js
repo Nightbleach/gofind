@@ -7,6 +7,7 @@ import LostFoundsWarehouses from '../views/LostFoundsWarehouses'
 import LostFoundsWarehouse from '../views/LostFoundsWarehouse'
 import NotFound from '../views/NotFound'
 import Comments from '../components/Comments'
+import SearchContentPage from '../views/SearchContentPage'
 
 Vue.use(Router)
 
@@ -35,10 +36,16 @@ export default new Router({
       component: LostFoundsWarehouses
     },
     {
-      path: '/LostFoundsWarehouses/:warehouse_note',
+      path: '/LostFoundsWarehouse/:warehouse_note',
       props: true,
       name: 'LostFoundsWarehouse',
       component: LostFoundsWarehouse
+    },
+    {
+      path: '/SearchContentPage',
+      props: true,
+      name: 'SearchContentPage',
+      component: SearchContentPage
     },
     {
       path: '/LostFoundsWarehouses/:warehouse_note/comment',

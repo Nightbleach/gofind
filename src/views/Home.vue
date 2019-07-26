@@ -14,30 +14,33 @@
                   >
                     <ais-autocomplete>
                       <template slot-scope="{ currentRefinement, indices, refine }">
+
                         <vue-autosuggest
-                          :suggestions="indicesToSuggestions(indices)"
-                          :input-props="{
-                            id:'autosuggest__input',
-                            style: 'width: 100%',
-                            onInputChange: refine,
-                            placeholder: 'Search here…',
-                             }"
+                          :suggestions="indicesToSuggestions(indices,currentRefinement,refine)"
+                          :input-props="inputProps"
+                          v-model="searchText"
+                          @selected="onSelected"
                         >
                           <template slot-scope="{ suggestion }">
-                            <h5>
-                              <ais-highlight
-                                :hit="suggestion.item"
-                                attribute="name"
-                                v-if="suggestion.item.name"
-                              />
-                            </h5>
-                            <strong>{{ suggestion.item.category }}</strong>
-                            <span>{{suggestion.item.foundAt}}</span>
+                            <template>
+                              <v-list rounded class="grey lighten-4">
+                                <v-list-tile-content>
+                                  <v-list-tile-title style="color:#FEC93E">{{suggestion.item.category}}</v-list-tile-title>
+                                  <v-list-tile-sub-title>{{suggestion.item.foundAt}}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+                              </v-list>
+                            </template>
                           </template>
                         </vue-autosuggest>
                       </template>
                     </ais-autocomplete>
                   </ais-instant-search>
+                </v-flex>
+                <v-flex xs12>
+                  <div class="right">
+                    <ais-powered-by>
+                    </ais-powered-by>
+                  </div>
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-btn
@@ -235,6 +238,16 @@ export default {
   name: 'Home',
   data () {
     return {
+      inset: false,
+      inputProps: {
+        id: 'autosuggest__input',
+        style: {
+          width: '100%',
+          outline: 'none'
+        },
+        placeholder: 'Search here…'
+      },
+      searchText: '',
       query: '',
       searchMenuVisibility: false,
       searchClient: algoliasearch(
@@ -1603,6 +1616,7 @@ export default {
     formIsValid () {
       return this.category !== '' && this.foundAt !== '' && this.note !== '' && this.imageUrl !== ''
     }
+
   },
   mounted () {
     console.log(firebase.auth().currentUser)
@@ -1645,49 +1659,76 @@ export default {
       this.image = files[0]
     },
     // set up algolia on select
-    // onSelect (selected) {
-    //   if (selected) {
-    //     this.query = selected.item.name
-    //   }
-    // },
+    onSelected (e) {
+      if (!e) {
+        if (this.searchText === '' || !this.searchText) {
+          return
+        }
+        this.$router.push({
+          path: '/SearchContentPage',
+          query: {
+            name: this.searchText
+          }
+        })
+        return
+      }
+      this.$router.push({
+        name: 'LostFoundsWarehouse',
+        params: {
+          warehouse_note: e.item.note
+        }
+      })
+      this.searchText = e.item.category
+    },
     indicesToSuggestions (indices) {
-      return indices.map(({ hits }) => ({ data: hits }))
+      var arr = []
+      var that = this
+      if (!this.searchText) {
+        return [ ]
+      }
+      indices.filter(function (product) {
+        Object.keys(product).some(function (key) {
+          arr = []
+          for (var i in product['hits']) {
+            if (product['hits'][i].category) {
+              var a = product['hits'][i].category.toLowerCase().indexOf(that.searchText)
+              if (a > -1) {
+                arr.push(product['hits'][i])
+              }
+            }
+          }
+        })
+      })
+      return [{data: arr}]
     }
-
   }
 }
 </script>
-
 <style lang="stylus" scoped>@import '../stylus/main.styl'
-  .ais-Highlight-highlighted {
-    background: cyan;
-    font-style: normal;
+#autosuggest {
+  position: relative;
+  display: block;
+  font-family: monospace;
+  font-size: 20px;
+  border: 2px solid #616161;
+  padding: 10px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  background-image url("../assets/img/search2.png")
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  background-position: 95% center;
+  transition: all 250ms ease-in-out;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+
+  &::placeholder {
+    color: color(#575756 a(0.8));
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
   }
-  .autosuggest__results-container {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  }
-  .autosuggest__results-container ul {
-    margin: 0;
-    padding: 0;
-  }
-  .autosuggest__results_item {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    list-style-type: none;
-    padding: 0.5em;
-    display: grid;
-    grid-template-columns: 5fr 1fr 1fr;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .autosuggest__results_item img {
-    height: 3em;
-  }
-  .autosuggest__results_item-highlighted {
-    background-color: rgba(0, 0, 0, 0.24);
-  }
-  .ais-Hits-item img {
-    max-width: 100%;
-  }
+}
 .tooltip-text
   font-family Montserrat
 .form-text-heading

@@ -44,8 +44,8 @@
             box
             v-show="showText"
             class="ml-2 search-textField"
-            v-model="search"
             label="Searching your stuff..."
+            v-model="searchText"
           >
           </v-text-field>
           <v-btn flat color="white" left @click="showText =!showText">
@@ -81,6 +81,7 @@ export default {
   name: 'Navbar',
   data () {
     return {
+      searchText: '',
       searchClient: algoliasearch(
         'Z4VDIUE2GF',
         '7d643c98f0574c73cedd655697584780'

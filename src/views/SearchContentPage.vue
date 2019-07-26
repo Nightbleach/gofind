@@ -1,5 +1,10 @@
 <template>
 <v-container fluid grid-list-lg class="pt-1">
+  <back-to-top bottom="80px" right="50px" visibleoffset="250">
+    <v-btn color="#FFD54F" fab dark>
+      <v-icon medium>fal fa-arrow-alt-circle-up</v-icon>
+    </v-btn>
+  </back-to-top>
   <v-layout row wrap>
     <v-flex xs12 sm6 md4 xl3
             v-for="item in getWarehouses"
@@ -68,8 +73,124 @@
 </template>
 
 <script>
+import db from '../firebase/firebaseinit'
+import RiseLoader from 'vue-spinner/src/RiseLoader'
+import BackToTop from 'vue-backtotop'
+import Swal from 'sweetalert2'
 export default {
-  name: 'SearchContentPage'
+  name: 'SearchContentPage',
+  components: {
+    RiseLoader,
+    BackToTop
+  },
+  data () {
+    return {
+      storageBanner: require('@/assets/img/1.png'),
+      creatorIcon: [
+        {id: '1', img: require('@/assets/img/creator-icon/man1.png')}
+      ],
+      warehouses: [],
+      loading: true,
+      loader: null,
+      loading2: false,
+      showLoading2: false,
+      search: '',
+      seeing: false,
+      paging: {
+        warehouse_per_page: 12,
+        end: false,
+        loading: false
+      },
+      ref: {
+        warehouses: null,
+        warehousesNext: null
+      }
+    }
+  },
+  computed: {
+    getWarehouses () {
+      return this.warehouses.filter(item => {
+        return item.category.toLowerCase().includes(this.search.toLowerCase()) ||
+          item.foundAt.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
+  },
+  watch: {
+    // Watch loader for loading more items from warehouse
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      setTimeout(() => (this[l] = false), 3000)
+
+      this.loader = null
+    }
+  },
+  mounted () {
+    this.search = this.$route.query.name
+    var searchData = this.warehouses.filter(item => {
+      item.category.toLowerCase().includes(this.$route.query.name)
+    })
+    this.warehouses = searchData
+  },
+  created () {
+    this.ref.warehouses = db.collection('warehouses')
+    // .where('category', '==', this.$route.query.name)// 这边应该是就是 this.$route.query.name == 我数据库里面的category吧
+      .orderBy('UploadDate', 'desc')
+    // load first page
+    const firstPage = this.ref.warehouses.limit(this.paging.warehouse_per_page)
+    this.handleWarehouses(firstPage)
+  },
+  methods: {
+    loadMore () {
+      if (this.paging.end) {
+        return
+      }
+      this.paging.loading = true
+      this.loading2 = true // when more data is coming, start loading
+      this.handleWarehouses(this.ref.warehousesNext).then((documentSnapshots) => {
+        this.paging.loading = false
+        this.loading2 = false // When data was fetched, end loading
+        if (documentSnapshots.empty) {
+          // if there is no more warehouses items to load, set paging.end to true
+          Swal.fire({
+            text: 'Opps, no more items in our warehouse!',
+            confirmButtonColor: '#4FC3F7',
+            imageUrl: require('@/assets/img/notification.png')
+          })
+          this.paging.end = true
+        }
+      })
+    },
+    handleWarehouses (ref) {
+      // Fetch warehouses of given reference
+      return new Promise((resolve, reject) => {
+        ref.get().then((documentSnapshots) => {
+          /* If documentSnapshots is empty, then we have loaded all of pages */
+          if (documentSnapshots.empty) {
+            this.paging.end = true
+            resolve(documentSnapshots)
+          }
+          documentSnapshots.forEach((doc) => {
+            let warehousesData = doc.data()
+            warehousesData.id = doc.id
+            this.warehouses.push(warehousesData)
+          })
+          this.loading = false
+          this.showLoading2 = true
+          /* Build reference for next page */
+          const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
+          if (!lastVisible) {
+            return
+          }
+          this.ref.warehousesNext = this.ref.warehouses
+            .startAfter(lastVisible)
+            .limit(this.paging.warehouse_per_page)
+          resolve(documentSnapshots)
+        })
+      })
+    }
+  }
 }
 </script>
 
