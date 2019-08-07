@@ -5,7 +5,19 @@
       <v-icon medium>fal fa-arrow-alt-circle-up</v-icon>
     </v-btn>
   </back-to-top>
-  <v-layout row wrap>
+  <v-layout column>
+    <v-flex xs12>
+      <v-tabs grow class="searchResult">
+        <v-tab class="text-capitalize">
+          Searching results for <div class="ml-1 result">"{{this.search}}"</div>"
+        </v-tab>
+      </v-tabs>
+    </v-flex>
+    <v-flex xs12 align-self-center>
+      <pulse-loader :loading="loading" color="#70CEE4"></pulse-loader>
+    </v-flex>
+  </v-layout>
+  <v-layout row wrap class="hidden-xs-only">
     <v-flex xs12 sm6 md4 xl3
             v-for="item in getWarehouses"
             :key="item.id"
@@ -53,6 +65,46 @@
       </v-card>
     </v-flex>
   </v-layout>
+  <v-container class="hidden-sm-and-up pa-0" fluid >
+    <v-layout row wrap >
+      <v-flex
+        xs12
+        v-for="item in getWarehouses"
+        :key="item.id"
+        class="smallScreenCard">
+        <v-card flat class="mb-2 grey lighten-5" :to="{name: 'LostFoundsWarehouse', params:{warehouse_note: item.note }}">
+          <v-layout>
+            <v-flex xs5 class="ml-1">
+              <v-img
+                :src='item.imageUrl'
+                contain
+                height="125"
+              ></v-img>
+            </v-flex>
+            <v-flex xs7>
+              <v-card-title  class="px-0">
+                <div>
+                  <div >
+                    <v-icon color="#FFB74D" small class="mr-1">fal fa-stream</v-icon>
+                    <span>{{item.category}}</span>
+                  </div>
+                  <div>
+                    <v-icon color="#00B0FF" small class="mr-1">fal fa-map-signs</v-icon>
+                    <span>{{item.foundAt}}</span>
+                  </div>
+                  <div class="mb-2">
+                    <v-icon color="#1DE9B6" small class="mr-1">fal fa-clock</v-icon>
+                    <span>{{item.UploadDate | date }}</span>
+                  </div>
+                </div>
+              </v-card-title>
+            </v-flex>
+          </v-layout>
+        </v-card>
+        <v-divider></v-divider>
+      </v-flex>
+    </v-layout>
+  </v-container>
   <v-layout justify-center row v-show="showLoading2">
     <v-flex shrink>
       <v-btn
@@ -74,13 +126,13 @@
 
 <script>
 import db from '../firebase/firebaseinit'
-import RiseLoader from 'vue-spinner/src/RiseLoader'
 import BackToTop from 'vue-backtotop'
 import Swal from 'sweetalert2'
+import PulseLoader from 'vue-spinner/src/PulseLoader'
 export default {
   name: 'SearchContentPage',
   components: {
-    RiseLoader,
+    PulseLoader,
     BackToTop
   },
   data () {
@@ -194,6 +246,45 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="stylus">
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .searchResult
+    font-family Montserrat
+    .result
+      color: #42A5F5
 </style>

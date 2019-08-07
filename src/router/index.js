@@ -8,6 +8,9 @@ import LostFoundsWarehouse from '../views/LostFoundsWarehouse'
 import NotFound from '../views/NotFound'
 import Comments from '../components/Comments'
 import SearchContentPage from '../views/SearchContentPage'
+import FAQ from '../views/FAQ'
+import ContactUs from '../views/ContactUs'
+import Privacy from '../views/Privacy'
 
 Vue.use(Router)
 
@@ -59,6 +62,21 @@ export default new Router({
           next({name: 'LostFoundsWarehouses'})
         }
       }
+    },
+    {
+      path: '/FAQ',
+      name: 'FAQ',
+      component: FAQ
+    },
+    {
+      path: '/ContactUs',
+      name: 'ContactUs',
+      component: ContactUs
+    },
+    {
+      path: '/Privacy',
+      name: 'Privacy',
+      component: Privacy
     },
     {
       path: '*',

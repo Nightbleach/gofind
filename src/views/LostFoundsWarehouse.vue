@@ -108,8 +108,6 @@ export default {
     enterComment () {
       if (this.alias) {
         this.$router.push({name: 'Comments', params: {alias: this.alias}})
-      } else {
-        this.feedback = 'You must enter an alias to add comments'
       }
     },
     onClick (item) {

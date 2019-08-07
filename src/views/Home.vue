@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform" xmlns:v-touch="">
 <v-container class="homePage">
 <!-- main home page start -->
   <v-layout align-center justify-center row>
@@ -6,7 +6,7 @@
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <template v-slot:activator="{ on }">
             <v-container text-xs-center class="home-btn">
-              <v-layout justify-space-between row fill-height wrap align-center class="upload-btn mt-5" >
+              <v-layout justify-space-around row fill-height wrap align-center class="upload-btn mt-5" >
                 <v-flex xs12>
                   <ais-instant-search
                     index-name="warehouses"
@@ -14,22 +14,21 @@
                   >
                     <ais-autocomplete>
                       <template slot-scope="{ currentRefinement, indices, refine }">
-
                         <vue-autosuggest
-                          :suggestions="indicesToSuggestions(indices,currentRefinement,refine)"
+                          :suggestions="indicesToSuggestions(indices)"
                           :input-props="inputProps"
                           v-model="searchText"
                           @selected="onSelected"
                         >
                           <template slot-scope="{ suggestion }">
-                            <template>
-                              <v-list rounded class="grey lighten-4">
-                                <v-list-tile-content>
-                                  <v-list-tile-title style="color:#FEC93E">{{suggestion.item.category}}</v-list-tile-title>
-                                  <v-list-tile-sub-title>{{suggestion.item.foundAt}}</v-list-tile-sub-title>
-                                </v-list-tile-content>
+                              <v-list rounded class="grey lighten-4 searchList" >
+                                <v-list-tile>
+                                  <v-list-tile-content class="listContent">
+                                    <v-list-tile-title style="color:#FEC93E">{{suggestion.item.category}}</v-list-tile-title>
+                                    <v-list-tile-sub-title>{{suggestion.item.foundAt}}</v-list-tile-sub-title>
+                                  </v-list-tile-content>
+                                </v-list-tile>
                               </v-list>
-                            </template>
                           </template>
                         </vue-autosuggest>
                       </template>
@@ -42,26 +41,26 @@
                     </ais-powered-by>
                   </div>
                 </v-flex>
-                <v-flex xs12 md6>
+                <v-flex xs8  md4>
                   <v-btn
                     block
                     flat
                     round
-                    class="text-capitalize btn-grad white--text yellow amber lighten-1 font-weight-black title "
+                    class="text-capitalize btn-grad white--text font-weight-black subheading fount-btn"
                     v-on="on"
-                  >Wow, You  found it !
+                  >Upload
                     <v-icon class="upload-icon ml-4" regular right>fal fa-cloud-upload</v-icon>
                   </v-btn>
                 </v-flex>
-                <v-flex xs12 md5>
+                <v-flex xs8 md4>
                   <router-link to="/lostFoundsWarehouses" tag="span">
                     <v-btn
+                      flat
                       block
                       round
-                      class="text-capitalize white--text font-weight-black subheading"
-                      color="#ff7575"
+                      class="text-capitalize white--text font-weight-black subheading warehouse-btn hidden-xs-only"
                     >
-                      Check our warehouse
+                      Warehouse
                       <v-icon
                         right
                         class="ml-4"
@@ -70,19 +69,80 @@
                   </router-link>
                 </v-flex>
               </v-layout>
+<!--          footer start-->
+              <v-footer fixed class="style-footer" max-width="800" >
+                  <v-layout row wrap justify-center >
+<!--                    <v-flex xs12 class="mb-0 ">-->
+                      <span  v-for="link in links" :key="link.name">
+                        <router-link
+                          class="mx-1 homepagelink" cursor="pointer" tag="a" :to="link.route">
+                          {{link.name}} {{'|'}}
+                        </router-link>
+                      </span>
+<!--                    </v-flex>-->
+<!--                    <v-divider dark class="blue--text divider">123</v-divider>-->
+                    <v-flex
+                      text-center
+                      xs12
+                      class="copyright-Text mb-2"
+                      tag="span"
+                    >
+                      &copy; {{'Copyright'}} {{ new Date().getFullYear() }} {{'All Rights Reserved.'}}
+                    </v-flex>
+                  </v-layout>
+              </v-footer>
             </v-container>
           </template>
 <!--         main home page end -->
 <!--       start user form (second toolbar start)  -->
           <v-card>
-            <v-toolbar dark flat class="amber lighten-1">
+            <v-toolbar dark flat class="amber lighten-1 dialog-form">
               <v-btn icon dark @click="dialog = false">
                 <v-icon>far fa-times-circle</v-icon>
               </v-btn>
-              <v-toolbar-title>3 steps that you can help others to find their stuff</v-toolbar-title>
+              <v-toolbar-title>3 steps help people to find the item</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-items>
-                <v-btn type="submit" form ="warehouseItemUpload" dark flat :disabled="!formIsValid"  class="text-capitalize subheading upload-text" >Submit</v-btn>
+                <v-btn type="submit" form ="warehouseItemUpload"  @click.stop="validationDialog = true" dark flat :disabled="!formIsValid"  class="text-capitalize subheading upload-text" >Submit</v-btn>
+<!--                <div class="text-xs-center" >-->
+<!--                  <v-dialog v-model="validationDialog" width="500">-->
+<!--                    <v-card>-->
+<!--                      <v-card-title-->
+<!--                        class="headline grey lighten-2"-->
+<!--                        primary-title-->
+<!--                      >-->
+<!--                        I'm not a robot ？-->
+<!--                        <v-spacer></v-spacer>-->
+<!--                        <v-icon color="blue">far fa-robot</v-icon>-->
+<!--                      </v-card-title>-->
+
+<!--                      <v-card-text>-->
+<!--                        这里面放数字运算验证码-->
+<!--                      </v-card-text>-->
+<!--                      <v-alert ></v-alert>-->
+
+<!--                      <v-divider></v-divider>-->
+
+<!--                      <v-card-actions>-->
+<!--                        <v-spacer></v-spacer>-->
+<!--                        <v-btn-->
+<!--                          color="primary"-->
+<!--                          flat-->
+<!--                          @click="validationDialog = false"-->
+<!--                        >-->
+<!--                          Cancel-->
+<!--                        </v-btn>-->
+<!--                        <v-btn-->
+<!--                          color="primary"-->
+<!--                          flat-->
+<!--                          @click="validationDialog = false"-->
+<!--                        >-->
+<!--                         Ok-->
+<!--                        </v-btn>-->
+<!--                      </v-card-actions>-->
+<!--                    </v-card>-->
+<!--                  </v-dialog>-->
+<!--                </div>-->
               </v-toolbar-items>
             </v-toolbar>
 <!--         second toolbar end   -->
@@ -92,7 +152,7 @@
                  <v-flex xs12 class="form-text-font">
                   <p class="subheading form-text-heading">
                     <v-icon class="mr-1" color="#40C4FF">fal fa-layer-group</v-icon>
-                    What types of stuff you found ?
+                    Which type of item you found ?
                   </p>
                    <v-combobox
                      name="category"
@@ -103,7 +163,7 @@
                      color="success"
                      v-model="category"
                      :items="itemsCategory"
-                     label="Is that a wallet or anything else"
+                     label="e.g. Is that a wallet or anything else"
                      :rules="[rules.required]"
                      placeholder="Wallet?"
                    >
@@ -114,17 +174,16 @@
                      <v-icon class="mr-1" color="#40C4FF">fal fa-image</v-icon>
                      What does stuff look like ?
                    </p>
-                   <v-tooltip top color="#FBC02D">
+                   <v-tooltip top color="#FFF">
                      <template v-slot:activator="{ on }">
+<!--                use component Vue2TouchEvents v-touch to replace @click to get well performance on mobile devices-->
                        <v-btn
                          v-on="on"
                          small
-                         raised
                          round
                          flat
-                         class="amber lighten-2 text-capitalize white--text ml-4"
-                         @click="onPickFile"
-                         style="cursor: pointer"
+                         class="text-capitalize white--text ml-4 imgUpload"
+                         v-touch:tap="onPickFile"
                        >Add/Replace Image</v-btn>
                      </template>
                      <span class="tooltip-text">The image size has to be less than 1MB</span>
@@ -144,7 +203,7 @@
                           :src ="imageUrl"
                           height="250"
                           id="imageUrl"
-                          alt="">
+                          alt=''>
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -155,7 +214,7 @@
                   <v-flex xs12 class="form-text-font">
                    <p class="subheading form-text-heading">
                      <v-icon class="mr-1" color="#40C4FF">fal fa-location</v-icon>
-                     Please tell us the approximate location or places , that helps owners to remind where they lost their stuffs</p>
+                     Please put the approximate location or places...</p>
                     <v-combobox
                       id="foundAt"
                       name="foundAt"
@@ -203,7 +262,7 @@
                     <v-divider class="my-5"></v-divider>
                     <p class="subheading form-text-heading">
                       <v-icon class="mr-1" color="#40C4FF">fal fa-clipboard</v-icon>
-                      Please leave a note, which ways they can get their stuff back...
+                      Comments
                     </p>
                     <v-textarea
                       name="note"
@@ -215,7 +274,7 @@
                       color="#FFC107"
                       outline
                       flat
-                      placeholder="Note might be your Phone Number/Email or pure note, Also you can bring the stuff to your nearest City Mini Market, We will put it into our LostFounds warehouse...  "
+                      placeholder="Note might be your Phone Number/Email or pure note, Also you can bring the item to your nearest City Mini Market, We will put it into our LostFounds warehouse...  "
                     >
                     </v-textarea>
                   </v-flex>
@@ -234,11 +293,21 @@ import db from '../firebase/firebaseinit'
 import firebase from 'firebase'
 import algoliasearch from 'algoliasearch/lite'
 import 'instantsearch.css/themes/algolia-min.css'
+import VueRecaptcha from 'vue-recaptcha'
 export default {
   name: 'Home',
   data () {
     return {
-      inset: false,
+      loginForm: {
+        recaptchaVerified: false,
+        pleaseTickRecaptchaMessage: ''
+      },
+      links: [
+        {name: 'Privacy', route: '/Privacy'},
+        {name: 'FAQ', route: '/FAQ'},
+        {name: 'Contact Us', route: '/ContactUs'}
+      ],
+      searchFeedback: null,
       inputProps: {
         id: 'autosuggest__input',
         style: {
@@ -270,6 +339,7 @@ export default {
         'Student Id card',
         'Wallet'
       ],
+      // Dunedin regions database
       dunedinDistrict: [
         'Abbotsford, Runciman St',
         'Abbotsford, Torquay St',
@@ -1602,6 +1672,7 @@ export default {
       ],
       image: null,
       dialog: false,
+      validationDialog: false,
       notifications: false,
       imageBanner: require('@/assets/img/home-ban.png'),
       // set input rules
@@ -1611,6 +1682,9 @@ export default {
       // set regions input selection
       search: null
     }
+  },
+  components: {
+    VueRecaptcha
   },
   computed: {
     formIsValid () {
@@ -1632,12 +1706,16 @@ export default {
         UploadDate: new Date().toISOString()
       })
         .then(docRef => this.$router.push('/lostFoundsWarehouses'))
+        // feedback if image size is bigger than 1MB
         // eslint-disable-next-line handle-callback-err
         .catch(error => this.$swal({
           title: 'Invalid Image Size!',
-          text: 'Image size has to be less than 1MB!',
+          html:
+            'Image size has to be less than 1MB!' + '<br>' + '<br>' +
+            'Use <b>any photo compressor tools</b>, ' + '<br>' +
+            'like' + '<a target="_blank" href="https://www.google.com/search?q=photo+compressor&oq=photo+compress&aqs=chrome.0.0j69i57j0l4.21454j0j8&sourceid=chrome&ie=UTF-8"> links</a>' +
+            ' to compress your photos',
           confirmButtonColor: '#4FC3F7',
-          iconColor: '#FFB300',
           imageUrl: require('@/assets/img/warning.png')
         }))
     },
@@ -1688,7 +1766,7 @@ export default {
       }
       indices.filter(function (product) {
         Object.keys(product).some(function (key) {
-          arr = []
+          arr = [ ]
           for (var i in product['hits']) {
             if (product['hits'][i].category) {
               var a = product['hits'][i].category.toLowerCase().indexOf(that.searchText)
@@ -1705,24 +1783,41 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>@import '../stylus/main.styl'
-#autosuggest {
-  position: relative;
-  display: block;
-  font-family: monospace;
-  font-size: 20px;
-  border: 2px solid #616161;
-  padding: 10px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  background-image url("../assets/img/search2.png")
-  background-repeat: no-repeat;
-  background-size: 18px 18px;
-  background-position: 95% center;
-  transition: all 250ms ease-in-out;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
+.homepagelink
+  text-decoration none
+  color #616161
+.homepagelink:hover
+  color #BDBDBD
+.copyright-Text
+  color #757575
+  font-size 0.75rem
+.dialog-form
+  background-color #FFDA77
+.fount-btn
+  background-color #FFDA77
+.imgUpload
+  background-color #FFDA77
+.warehouse-btn
+  background-color #ff8195
+.listContent
+  cursor pointer
+.listContent:hover
+  background-color #EEEEEE
 
+#autosuggest {
+  position: relative
+  display: block
+  font-family: monospace
+  font-size: 20px
+  border: 2px solid #BDBDBD
+  padding: 10px
+  box-sizing: border-box
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  background-image url("../assets/img/search2.png")
+  background-repeat: no-repeat
+  background-size: 18px 18px
+  background-position: 95% center
   &::placeholder {
     color: color(#575756 a(0.8));
     text-transform: uppercase;
@@ -1731,6 +1826,10 @@ export default {
 }
 .tooltip-text
   font-family Montserrat
+  color #ED6767
+//+for_breakpoint(mobile)
+ // .tooltip-text
+ //   display none
 .form-text-heading
   color #424242
 .home-btn

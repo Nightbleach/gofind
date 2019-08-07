@@ -5,13 +5,6 @@
       <v-icon medium>fal fa-arrow-alt-circle-up</v-icon>
     </v-btn>
   </back-to-top>
-<!--  <v-layout row>-->
-<!--    <v-flex xs12 class="pt-0" >-->
-<!--      <v-card>-->
-<!--          <v-img :src="storageBanner" aspect-ratio="5.1"></v-img>-->
-<!--      </v-card>-->
-<!--    </v-flex>-->
-<!--  </v-layout>-->
   <v-divider class="mt-1 mb-0 pb-0"></v-divider>
 <!--search start-->
   <v-layout row wrap>
@@ -29,9 +22,8 @@
       >
       </v-text-field>
     </v-flex>
-    <v-flex xs12 sm12 lg7 md7 xl7 class="pt-4 explain-text">
-      <v-icon small flat color="#54BDAF" class="mt-0">fal fa-exclamation</v-icon>
-      <span class="explain-text body-2" >Go search type of goods or even location where you might lost them</span>
+    <v-flex xs12 sm12 lg7 md7 xl7>
+<!--      layout requirement-->
     </v-flex>
     <v-layout row no-wrap>
       <v-flex xs12 md5>
@@ -41,13 +33,13 @@
         </div>
       </v-flex>
       <v-flex xs12 md2>
-        <rise-loader :loading="loading" color="#FFCA28" style="margin-top: 8rem" class="mt-5"></rise-loader>
+        <rise-loader :loading="loading" color="#70CEE4" style="margin-top: 8rem" class="mt-5"></rise-loader>
       </v-flex>
   </v-layout>
 <!--    search end -->
   </v-layout>
   <v-divider></v-divider>
-    <v-layout row wrap>
+    <v-layout row wrap class="hidden-xs-only">
       <v-flex xs12 sm6 md4 xl3
               v-for="item in getWarehouses"
               :key="item.id"
@@ -62,12 +54,12 @@
             <v-card-text>
               <div class="description-text subheading">
                 <div class="mb-2">
-                  <v-icon color="#FFB74D" class="mr-2">fal fa-acorn</v-icon>
+                  <v-icon color="#FFB74D" class="mr-2">fal fa-stream</v-icon>
                   <span>Category: {{item.category}}</span>
                 </div>
                 <div class="mb-2">
                   <div>
-                    <v-icon color="#00B0FF" class="mr-2">fal fa-map-marked-alt</v-icon>
+                    <v-icon color="#00B0FF" class="mr-2">fal fa-map-signs</v-icon>
                     <span>Found at: {{item.foundAt}}</span>
                   </div>
                 </div>
@@ -95,6 +87,46 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <v-container class="hidden-sm-and-up pa-0" fluid >
+      <v-layout row wrap >
+        <v-flex
+          xs12
+          v-for="item in getWarehouses"
+          :key="item.id"
+          class="smallScreenCard">
+          <v-card flat class="mb-2 grey lighten-5" :to="{name: 'LostFoundsWarehouse', params:{warehouse_note: item.note }}">
+            <v-layout>
+              <v-flex xs5 class="ml-1">
+                <v-img
+                  :src='item.imageUrl'
+                  contain
+                  height="125"
+                ></v-img>
+              </v-flex>
+              <v-flex xs7>
+                <v-card-title  class="px-0">
+                  <div>
+                    <div >
+                      <v-icon color="#FFB74D" small class="mr-1">fal fa-stream</v-icon>
+                      <span>{{item.category}}</span>
+                    </div>
+                    <div>
+                      <v-icon color="#00B0FF" small class="mr-1">fal fa-map-signs</v-icon>
+                      <span>{{item.foundAt}}</span>
+                    </div>
+                    <div class="mb-2">
+                      <v-icon color="#1DE9B6" small class="mr-1">fal fa-clock</v-icon>
+                      <span>{{item.UploadDate | date }}</span>
+                    </div>
+                  </div>
+                </v-card-title>
+              </v-flex>
+            </v-layout>
+          </v-card>
+          <v-divider></v-divider>
+        </v-flex>
+      </v-layout>
+    </v-container>
     <v-layout justify-center row v-show="showLoading2">
       <v-flex shrink>
        <v-btn

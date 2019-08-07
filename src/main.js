@@ -14,7 +14,7 @@ import fastClick from 'fastclick'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-import '@fortawesome/fontawesome-free/css/all.css'
+// import '@fortawesome/fontawesome-free/css/all.css'
 import store from './store'
 import '@fortawesome/fontawesome-pro/css/all.css'
 import DateFilter from './filter/date'
@@ -25,8 +25,10 @@ import InstantSearch from 'vue-instantsearch'
 import VuePageTransition from 'vue-page-transition'
 import VueChatScroll from 'vue-chat-scroll'
 import VueAutosuggest from 'vue-autosuggest'
+import Vue2TouchEvents from 'vue2-touch-events'
 
 Vue.filter('date', DateFilter)
+Vue.use(Vue2TouchEvents)
 Vue.use(VueAutosuggest)
 Vue.use(InstantSearch)
 Vue.use(VueSweetalert2)
@@ -36,8 +38,8 @@ Vue.use(Vuetify, {
   iconfont: 'fa' // 'md' || 'mdi' || 'fa' || 'fa4'
 })
 
-Vue.config.productionTip = false
 fastClick.attach(document.body)
+Vue.config.productionTip = false
 
 let app = null
 // Wait for firebase auth to init before creating the app

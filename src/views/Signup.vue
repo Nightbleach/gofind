@@ -2,8 +2,8 @@
 <v-container class="signup-con" fluid>
   <v-layout row no-wrap justify-center class="mt-1">
     <v-flex xs12 md6 lg5 offset-md1 class="mt-3">
-      <div class="signup-l-text mt-2  mb-3 font-weight-black justify-center">Help people to find their treasure ?</div>
-      <p class="subheading mt-2 signup-l-text2 wrap">Just upload the thing  and 'where did you find' info</p>
+      <div class="signup-l-text mt-2  mb-3 font-weight-bold justify-center">Help people to find their treasure ?</div>
+      <p class="subheading mt-2 signup-l-text2 wrap">Just upload the item  and 'where did you find' info</p>
       <p class="subheading mt-2 signup-l-text2 wrap">you're so Kind!</p>
       <v-card>
        <v-container>

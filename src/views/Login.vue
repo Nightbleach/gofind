@@ -2,9 +2,9 @@
 <v-container>
   <v-layout class="login-layout mt-2" row justify-center no-wrap>
     <v-flex xs12 sm10 md8 lg7 class="mt-5 px-5">
-      <div class="login-text font-weight-bold">Login to your account</div>
-      <v-btn large block color="light-blue accent-2"
-             class="white--text mt-4 login-btn mb-4 social-button"
+      <div class="login-text font-weight-medium">Login to your account</div>
+      <v-btn flat large block
+             class="white--text mt-4 login-btn mb-4 social-button light-blue accent-2"
              v-for=" item in logInBtn" :key="item.name"
              @click="socialLogin"
       >
@@ -39,7 +39,7 @@
       </v-text-field>
         <v-text-field
           lazy-validation
-          label="password"
+          label="Password"
           name="password"
           id="password"
           v-model="password"
@@ -49,7 +49,7 @@
         </v-text-field>
         <v-btn type="submit" large block flat class="mt-4 headline text-capitalize amber lighten-1 white--text font-weight-bold">Login</v-btn>
       </v-form>
-      <div class="create-account-text justify-center title mt-5">Don't have an account?<router-link  class="blue--text ml-2 hover-signup" cursor="pointer" tag="a" to="/signup">Signup</router-link></div>
+      <div class="create-account-text justify-center subheading mt-5">Don't have an account?<router-link  class="blue--text ml-2 hover-signup" cursor="pointer" tag="a" to="/signup">Signup</router-link></div>
     </v-flex>
   </v-layout>
 </v-container>
@@ -140,7 +140,7 @@ export default {
   font-family Montserrat
 +for_breakpoint(desktop)
   .login-text
-    font-size 2.55rem
+    font-size 2.3rem
     -webkit-transform font-size 0.2s ease-out
 +for_breakpoint(tablet)
   .login-text

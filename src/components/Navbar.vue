@@ -23,7 +23,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar  height="62px !important" flat class="light-blue accent-3">
+    <v-toolbar  height="62px !important" flat class="light-blue accent-3 nav-color">
       <v-toolbar-title class="logo-text mt-2">
         <router-link to="/" tag="span" style="cursor: pointer">
         <v-icon large left  color="white" class="brand-logo">far fa-user-astronaut</v-icon>
@@ -33,31 +33,11 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items class="login-font mr-3 mt-1">
-          <v-text-field
-            autofocus
-            color="white"
-            clearable
-            @click:clear="callItBack()"
-            flat
-            outline
-            dark
-            box
-            v-show="showText"
-            class="ml-2 search-textField"
-            label="Searching your stuff..."
-            v-model="searchText"
-          >
-          </v-text-field>
-          <v-btn flat color="white" left @click="showText =!showText">
-            <v-icon
-              class="search-icon"
-              flat
-              color="white"
-              right
-              >far fa-search
-            </v-icon>
-          </v-btn>
-
+        <v-btn flat color="white" class="hidden-xs-only">
+          <router-link to="/lostFoundsWarehouses" tag="span">
+            <v-icon right>fal fa-warehouse</v-icon>
+          </router-link>
+        </v-btn>
         <v-btn flat color="white" class="hidden-xs-only" v-if="!user">
           <router-link to="/login" tag="span">
             <v-icon left>fal fa-user</v-icon>
@@ -76,23 +56,18 @@
 
 <script>
 import firebase from 'firebase'
-import algoliasearch from 'algoliasearch'
 export default {
   name: 'Navbar',
   data () {
     return {
-      searchText: '',
-      searchClient: algoliasearch(
-        'Z4VDIUE2GF',
-        '7d643c98f0574c73cedd655697584780'
-      ),
       searchMenuVisibility: false,
       openSearch: false,
       showText: false,
       search: null,
       navDrawer: false,
       drawerLists: [
-        {icon: 'fa-user-astronaut', title: 'Search your treasure', route: '/'},
+        {icon: 'fal fa-warehouse', title: 'Check our Warehouse', route: '/lostFoundsWarehouses'},
+        {icon: 'fal fa-search', title: 'Search your treasure', route: '/'},
         {icon: 'fas fa-child', title: 'Sign in', route: '/login'},
         {icon: 'fas fa-user-plus', title: 'Sign up', route: '/signup'}
       ],
@@ -116,35 +91,12 @@ export default {
       firebase.auth().signOut().then(() => {
         this.$router.push('/signup')
       })
-    },
-    searchInput () {
     }
-    // showText () {
-    //   this.showIcon = false
-    // }
   }
 }
 </script>
 
 <style lang="stylus" scoped>@import '../stylus/main.styl'
-// set the size of search bar start
-  .search-textField
-    width 26rem
-    font-family Montserrat
-  +for_breakpoint(tablet)
-    .search-textField
-      width 29rem
-      height 60px
-  @media (min-width: 688px) and (max-width: 855px)
-    .search-textField
-      width:20rem
-  @media (max-width: 550px)
-    .search-textField
-      width:22rem
-  @media (max-width: 466px)
-    .search-textField
-      width:18.4rem
-// set the size of search bar  end
   .nav-login-text
     font-family Montserrat !important
     line-height 64px
