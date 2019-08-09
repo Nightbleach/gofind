@@ -1,20 +1,28 @@
-<template>
-    <div class="notFound_img">
+<template >
+    <div class="background">
+      <v-img
+        :src="image"
+        contain
+        aspect-ratio="2.0"
+        class="img"
+        position="center center"
+      >
+      </v-img>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'NotFound'
+  name: 'NotFound',
+  data () {
+    return {
+      image: require('../assets/img/404.png')
+    }
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .notFound_img
-    background-image url("../assets/img/404.png")
-    background-repeat no-repeat
-    background-position center
-    background-size cover
-    height 100%
-
+  .background
+    background-color #f1f1f3
 </style>

@@ -137,7 +137,6 @@ export default {
   },
   data () {
     return {
-      storageBanner: require('@/assets/img/1.png'),
       creatorIcon: [
         {id: '1', img: require('@/assets/img/creator-icon/man1.png')}
       ],

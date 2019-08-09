@@ -1674,7 +1674,6 @@ export default {
       dialog: false,
       validationDialog: false,
       notifications: false,
-      imageBanner: require('@/assets/img/home-ban.png'),
       // set input rules
       rules: {
         required: value => !!value || 'Required.'

@@ -81,7 +81,7 @@ export default {
       warehouse: null,
       Comments: [],
       feedback: null,
-      CommentImage: require('@/assets/img/comment-img.png'),
+      CommentImage: require('@/assets/img/comment-img.jpg'),
       commentIcon: require('@/assets/img/comment-icon.png'),
       user: null,
       userInfo: null
