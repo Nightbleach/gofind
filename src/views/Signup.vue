@@ -103,7 +103,9 @@
 </v-container>
 </template>
 
-<script>import firebase from 'firebase'
+<script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
 import db from '../firebase/firebaseinit'
 import slugify from 'slugify'
 export default {

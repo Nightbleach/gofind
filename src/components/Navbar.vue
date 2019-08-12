@@ -55,7 +55,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/auth'
 export default {
   name: 'Navbar',
   data () {
@@ -120,6 +121,8 @@ export default {
     .logo-text
       line-height 64px
       margin-left -2.5rem
-      text-indent -13px
+      text-indent -17px
+    .brand-logo
+      text-indent -10px
 
 </style>

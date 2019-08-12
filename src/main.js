@@ -3,9 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 // import firebase
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import 'firebase/auth'
-import 'firebase/database'
 import 'firebase/firestore'
 // End firebase import
 import './assets/styles/reset.css'

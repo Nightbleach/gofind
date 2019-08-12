@@ -172,22 +172,16 @@
                  <v-flex xs12 class="form-text-font">
                    <p class="subheading form-text-heading" style="display: inline">
                      <v-icon class="mr-1" color="#40C4FF">fal fa-image</v-icon>
-                     What does stuff look like ?
+                     What does item look like ?
                    </p>
-                   <v-tooltip top color="#FFF">
-                     <template v-slot:activator="{ on }">
 <!--                use component Vue2TouchEvents v-touch to replace @click to get well performance on mobile devices-->
                        <v-btn
-                         v-on="on"
                          small
                          round
                          flat
                          class="text-capitalize white--text ml-4 imgUpload"
                          v-touch:tap="onPickFile"
                        >Add/Replace Image</v-btn>
-                     </template>
-                     <span class="tooltip-text">The image size has to be less than 1MB</span>
-                   </v-tooltip>
                    <input
                      type="file"
                      style="display: none"
@@ -198,12 +192,12 @@
                  </v-flex>
                   <v-flex>
                     <v-card max-width="450" class="text-xs-center">
-                        <img
-                          style="vertical-align: middle"
-                          :src ="imageUrl"
-                          height="250"
-                          id="imageUrl"
-                          alt=''>
+                      <img
+                        style="vertical-align: middle"
+                        :src ="imageUrl"
+                        height="250"
+                        id="imageUrl"
+                        alt=''>
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -290,10 +284,11 @@
 
 <script>
 import db from '../firebase/firebaseinit'
-import firebase from 'firebase'
 import algoliasearch from 'algoliasearch/lite'
 import 'instantsearch.css/themes/algolia-min.css'
 import VueRecaptcha from 'vue-recaptcha'
+import Exif from 'exif-js'
+
 export default {
   name: 'Home',
   data () {
@@ -1691,9 +1686,9 @@ export default {
     }
 
   },
-  mounted () {
-    console.log(firebase.auth().currentUser)
-  },
+  // mounted () {
+  //   console.log(firebase.auth().currentUser)
+  // },
   methods: {
     // create a document in cloud firestore
     onCreateWarehouseItem () {
@@ -1705,12 +1700,12 @@ export default {
         UploadDate: new Date().toISOString()
       })
         .then(docRef => this.$router.push('/lostFoundsWarehouses'))
-        // feedback if image size is bigger than 1MB
+        // feedback if image size is bigger than 8MB
         // eslint-disable-next-line handle-callback-err
         .catch(error => this.$swal({
           title: 'Invalid Image Size!',
           html:
-            'Image size has to be less than 1MB!' + '<br>' + '<br>' +
+            'Image size has to be less than 8MB!' + '<br>' + '<br>' +
             'Use <b>any photo compressor tools</b>, ' + '<br>' +
             'like' + '<a target="_blank" href="https://www.google.com/search?q=photo+compressor&oq=photo+compress&aqs=chrome.0.0j69i57j0l4.21454j0j8&sourceid=chrome&ie=UTF-8"> links</a>' +
             ' to compress your photos',
@@ -1722,20 +1717,75 @@ export default {
       this.$refs.fileInput.click()
     },
     onFilePicked (event) {
+      let that = this
       const files = event.target.files
       let filename = files[0].name
       if (filename.lastIndexOf('.') <= 0) {
         return alert('Please pick a valid image format!')
       }
       // use fileReade read files that users typed
-      const fileReader = new FileReader()
-      fileReader.addEventListener('load', () => {
-        this.imageUrl = fileReader.result
-      })
+      let fileReader = new FileReader()
+      // 将图片转成base64格式
       fileReader.readAsDataURL(files[0])
-      this.image = files[0]
+      // 读取成功后的回调
+      fileReader.onloadend = function () {
+        let result = this.result
+        let img = new Image()
+        img.src = result
+        img.onload = function () {
+          that.imageUrl = that.compress(img)
+        }
+      }
     },
-    // set up algolia on select
+    compress (img) {
+      let Orientation
+      // 去获取拍照时的信息，解决拍出来的照片旋转问题
+      Exif.getData(img, function () {
+        Orientation = Exif.getTag(this, 'Orientation')
+      })
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      // 这个var 错误 要怎么改呢？
+      let degree = 0
+      let drawWidth
+      let drawHeight
+      let width = img.width
+      let height = img.height
+      canvas.width = width
+      canvas.height = height
+      drawWidth = width
+      drawHeight = height
+      // 铺底色
+
+      if (Orientation !== '' && Orientation !== 1) {
+        switch (Orientation) {
+          case 6:
+            // 这块是不是就是必须让width =height 为了那个90度的rotate
+            canvas.width = height
+            canvas.height = width
+            degree = 90
+            drawWidth = width
+            drawHeight = -height
+            break
+          // iphone竖屏拍摄，此时home键在上方
+          case 8:
+            canvas.width = height
+            canvas.height = width
+            degree = 270
+            drawWidth = -width
+            drawHeight = height
+            break
+        }
+      }
+      // 使用canvas旋转校正
+      ctx.rotate(degree * Math.PI / 180)
+      // 铺底色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, drawWidth, drawHeight)
+      // 进行最小压缩
+      return canvas.toDataURL('image/jpeg', 0.2)
+    },
     onSelected (e) {
       if (!e) {
         if (this.searchText === '' || !this.searchText) {
@@ -1758,17 +1808,17 @@ export default {
       this.searchText = e.item.category
     },
     indicesToSuggestions (indices) {
-      var arr = []
-      var that = this
+      let arr = []
+      let that = this
       if (!this.searchText) {
         return [ ]
       }
       indices.filter(function (product) {
         Object.keys(product).some(function (key) {
           arr = [ ]
-          for (var i in product['hits']) {
+          for (let i in product['hits']) {
             if (product['hits'][i].category) {
-              var a = product['hits'][i].category.toLowerCase().indexOf(that.searchText)
+              let a = product['hits'][i].category.toLowerCase().indexOf(that.searchText)
               if (a > -1) {
                 arr.push(product['hits'][i])
               }
@@ -1778,8 +1828,7 @@ export default {
       })
       return [{data: arr}]
     }
-  }
-}
+  }}
 </script>
 <style lang="stylus" scoped>@import '../stylus/main.styl'
 .homepagelink

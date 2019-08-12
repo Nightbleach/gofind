@@ -67,7 +67,6 @@
 
 <script>
 import db from '../firebase/firebaseinit'
-// import firebase from 'firebase'
 export default {
   name: 'SingleWarehouse',
   data () {
