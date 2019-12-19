@@ -9,7 +9,7 @@
     <v-flex xs12>
       <v-tabs grow class="searchResult">
         <v-tab class="text-capitalize">
-          Searching results for <div class="ml-1 result">"{{this.search}}"</div>"
+          Searching results for <div class="ml-1 result">"{{this.search}}"</div>
         </v-tab>
       </v-tabs>
     </v-flex>
@@ -186,7 +186,6 @@ export default {
   },
   created () {
     this.ref.warehouses = db.collection('warehouses')
-    // .where('category', '==', this.$route.query.name)// 这边应该是就是 this.$route.query.name == 我数据库里面的category吧
       .orderBy('UploadDate', 'desc')
     // load first page
     const firstPage = this.ref.warehouses.limit(this.paging.warehouse_per_page)

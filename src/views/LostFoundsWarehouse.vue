@@ -4,12 +4,14 @@
     <v-flex xs12 md5 lg5 >
       <v-card>
         <v-card-title>
-          <div class="title-text headline font-weight-black justify-center">Golly, We Found it !</div>
+          <div class="title-text headline font-weight-black text-center">
+            Golly, We Found it !</div>
         </v-card-title>
         <v-img
           v-if="warehouse"
           :src="warehouse.imageUrl"
           aspect-ratio="1.5"
+          contain
         >
         </v-img>
         <v-layout row wrap>
@@ -25,8 +27,8 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
-                color="#FFD54F"
-                class="subheading font-weight-medium text-capitalize comment mt-4"
+                flat
+                class="subheading font-weight-medium text-capitalize white--text comment mt-4"
                 @click='onClick(warehouse)'
               >Comments</v-btn>
             </v-card-actions>
@@ -128,7 +130,9 @@ export default {
   color #FFB300
 .comment
   font-family Montserrat
-  color: #fff
+  background-color #FFD54F
 .comment-title
   font-family Montserrat
+.item-img
+  background-size 100% 100%
 </style>

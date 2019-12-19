@@ -10,6 +10,7 @@
             v-if="warehouse"
             :src="warehouse.imageUrl"
             aspect-ratio="1.5"
+            contain
           >
           </v-img>
           <v-layout row wrap>
@@ -69,7 +70,6 @@
 import db from '../firebase/firebaseinit'
 import AddComment from '../components/AddComment'
 import moment from 'moment'
-// import firebase from 'firebase'
 export default {
   name: 'SingleWarehouse',
   props: ['alias'],

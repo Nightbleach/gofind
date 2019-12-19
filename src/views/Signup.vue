@@ -9,8 +9,8 @@
        <v-container>
          <v-layout>
            <v-flex xs12>
-             <v-card color="blue accent-2">
-                 <v-card-actions class="light-blue accent-2">
+             <v-card color="blue accent-2" flat>
+                 <v-card-actions class="light-blue accent-2" >
                    <v-icon class="white--text pl-2" left>fab fa-google</v-icon>
                    <v-btn @click="socialLogin" flat block class="white--text  text-capitalize google-text title font-weight-black">Continue with Google</v-btn>
                  </v-card-actions>

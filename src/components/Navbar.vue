@@ -27,7 +27,7 @@
       <v-toolbar-title class="logo-text mt-2">
         <router-link to="/" tag="span" style="cursor: pointer">
         <v-icon large left  color="white" class="brand-logo">far fa-user-astronaut</v-icon>
-        <span class="font-weight-bold white--text brand-text">Lostfounds</span>
+        <span class="font-weight-bold white--text brand-text">Lostfounds<sup class="beta-text subheading">beta</sup></span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -98,6 +98,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>@import '../stylus/main.styl'
+  .beta-text
+    font-family Montserrat
   .nav-login-text
     font-family Montserrat !important
     line-height 64px
@@ -123,6 +125,6 @@ export default {
       margin-left -2.5rem
       text-indent -17px
     .brand-logo
-      text-indent -10px
+      text-indent -15px
 
 </style>

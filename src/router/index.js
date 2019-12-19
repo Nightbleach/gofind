@@ -66,17 +66,20 @@ export default new Router({
     {
       path: '/FAQ',
       name: 'FAQ',
-      component: FAQ
+      component: FAQ,
+      meta: {transition: 'fade-in-up'}
     },
     {
       path: '/ContactUs',
       name: 'ContactUs',
-      component: ContactUs
+      component: ContactUs,
+      meta: {transition: 'fade-in-right'}
     },
     {
       path: '/Privacy',
       name: 'Privacy',
-      component: Privacy
+      component: Privacy,
+      meta: {transition: 'fade-in-up'}
     },
     {
       path: '*',

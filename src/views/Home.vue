@@ -72,15 +72,12 @@
 <!--          footer start-->
               <v-footer fixed class="style-footer" max-width="800" >
                   <v-layout row wrap justify-center >
-<!--                    <v-flex xs12 class="mb-0 ">-->
                       <span  v-for="link in links" :key="link.name">
                         <router-link
                           class="mx-1 homepagelink" cursor="pointer" tag="a" :to="link.route">
                           {{link.name}} {{'|'}}
                         </router-link>
                       </span>
-<!--                    </v-flex>-->
-<!--                    <v-divider dark class="blue--text divider">123</v-divider>-->
                     <v-flex
                       text-center
                       xs12
@@ -104,45 +101,6 @@
               <v-spacer></v-spacer>
               <v-toolbar-items>
                 <v-btn type="submit" form ="warehouseItemUpload"  @click.stop="validationDialog = true" dark flat :disabled="!formIsValid"  class="text-capitalize subheading upload-text" >Submit</v-btn>
-<!--                <div class="text-xs-center" >-->
-<!--                  <v-dialog v-model="validationDialog" width="500">-->
-<!--                    <v-card>-->
-<!--                      <v-card-title-->
-<!--                        class="headline grey lighten-2"-->
-<!--                        primary-title-->
-<!--                      >-->
-<!--                        I'm not a robot ？-->
-<!--                        <v-spacer></v-spacer>-->
-<!--                        <v-icon color="blue">far fa-robot</v-icon>-->
-<!--                      </v-card-title>-->
-
-<!--                      <v-card-text>-->
-<!--                        这里面放数字运算验证码-->
-<!--                      </v-card-text>-->
-<!--                      <v-alert ></v-alert>-->
-
-<!--                      <v-divider></v-divider>-->
-
-<!--                      <v-card-actions>-->
-<!--                        <v-spacer></v-spacer>-->
-<!--                        <v-btn-->
-<!--                          color="primary"-->
-<!--                          flat-->
-<!--                          @click="validationDialog = false"-->
-<!--                        >-->
-<!--                          Cancel-->
-<!--                        </v-btn>-->
-<!--                        <v-btn-->
-<!--                          color="primary"-->
-<!--                          flat-->
-<!--                          @click="validationDialog = false"-->
-<!--                        >-->
-<!--                         Ok-->
-<!--                        </v-btn>-->
-<!--                      </v-card-actions>-->
-<!--                    </v-card>-->
-<!--                  </v-dialog>-->
-<!--                </div>-->
               </v-toolbar-items>
             </v-toolbar>
 <!--         second toolbar end   -->
@@ -150,6 +108,7 @@
               <form ref="form" @submit.prevent="onCreateWarehouseItem" id="warehouseItemUpload">
                 <v-layout row justify-start wrap>
                  <v-flex xs12 class="form-text-font">
+                  <v-progress-linear class="hidden-sm-and-up" color="#fada80" v-show="showProgressBar" :indeterminate="true"></v-progress-linear>
                   <p class="subheading form-text-heading">
                     <v-icon class="mr-1" color="#40C4FF">fal fa-layer-group</v-icon>
                     Which type of item you found ?
@@ -1674,7 +1633,8 @@ export default {
         required: value => !!value || 'Required.'
       },
       // set regions input selection
-      search: null
+      search: null,
+      showProgressBar: false
     }
   },
   components: {
@@ -1692,6 +1652,7 @@ export default {
   methods: {
     // create a document in cloud firestore
     onCreateWarehouseItem () {
+      this.showProgressBar = true
       db.collection('warehouses').add({
         category: this.category,
         imageUrl: this.imageUrl,
@@ -1745,7 +1706,6 @@ export default {
       })
       let canvas = document.createElement('canvas')
       let ctx = canvas.getContext('2d')
-      // 这个var 错误 要怎么改呢？
       let degree = 0
       let drawWidth
       let drawHeight

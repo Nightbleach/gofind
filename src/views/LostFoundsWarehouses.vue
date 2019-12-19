@@ -48,7 +48,9 @@
         >
             <v-img
               :src='item.imageUrl'
+              class="Item-img"
               aspect-ratio="1.6"
+              contain
             >
             </v-img>
             <v-card-text>
@@ -201,21 +203,6 @@ export default {
     }
   },
   created () {
-    // fetch data from firestore =  best way
-    // this.ref.warehouses = db.collection('warehouses').orderBy('UploadDate', 'desc').onSnapshot(res => {
-    //   const changes = res.docChanges()
-    //   changes.forEach(change => {
-    //     if (change.type === 'added') {
-    //       this.warehouses.push({
-    //         ...change.doc.data(),
-    //         id: change.doc.id
-    //       })
-    //       this.loading = false
-    //     }
-    //   })
-    // })
-    // GET
-    // fetch data from firebase = way2
     this.ref.warehouses = db.collection('warehouses').orderBy('UploadDate', 'desc')
     // load first page
     const firstPage = this.ref.warehouses.limit(this.paging.warehouse_per_page)
