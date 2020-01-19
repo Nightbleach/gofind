@@ -34,7 +34,7 @@ export default {
         ' We do not share personal information to any other party under this Privacy and the Privacy Act.' +
         ' Personal information will be stored in “ the cloud” in secure databases on our behalf by third party based overseas.</br>' +
         '</br> You are responsible for ensuring your Internet browser and computer system are secure and can support any security measures we use to protect your information.</br>' +
-        '</br> You can contact us at any time by emailing us at xxxxx@mail.com </br>' +
+        '</br> You can contact us at any time by emailing us at terrynightbleach@gmail.com </br>' +
         '<br> We are committed to protecting your personal information; if you have any questions about this Privacy Policy, please contact us using the details set out above. '
     }
   }

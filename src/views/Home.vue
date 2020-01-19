@@ -58,7 +58,7 @@
                       flat
                       block
                       round
-                      class="text-capitalize white--text font-weight-black subheading warehouse-btn hidden-xs-only"
+                      class="text-capitalize white--text font-weight-black subheading warehouse-btn"
                     >
                       Warehouse
                       <v-icon
