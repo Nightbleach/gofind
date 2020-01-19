@@ -521,9 +521,6 @@ export default {
         'Caversham, Sydney St',
         'Caversham, Thorn St',
         'Central Library(Otago)',
-        'City Mini Market(21 Frederick St)',
-        'City Mini Market(241 Moray PI)',
-        'City Mini Market(90 Princes St)',
         'Clocktower(Otago)',
         'Clyde Hill, Bridge St',
         'Clyde Hill, Dacre Crt',
@@ -1622,7 +1619,7 @@ export default {
       // end
       noteRules: [
         v => !!v || 'Note is required',
-        v => (v && v.length <= 100) || 'Note must be less than 100 characters'
+        v => (v && v.length <= 150) || 'Note must be less than 150 characters'
       ],
       image: null,
       dialog: false,
