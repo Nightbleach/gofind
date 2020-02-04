@@ -26,7 +26,7 @@ export default {
   name: 'ContactUs',
   data () {
     return {
-      contact_text: ' You can contact us at any time by emailing us at terrynightbleach@mail.com </br>'
+      contact_text: ' You can contact us at any time by emailing us at terrynightbleach@gmail.com </br>'
     }
   }
 }

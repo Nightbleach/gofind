@@ -221,7 +221,7 @@
                       name="note"
                       id="note"
                       v-model="note"
-                      :counter="100"
+                      :counter="150"
                       :rules="noteRules"
                       required
                       color="#FFC107"
